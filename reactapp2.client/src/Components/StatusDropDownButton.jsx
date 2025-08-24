@@ -31,8 +31,8 @@ function StatusDropdownButton({ currentStatus, packageRef, variant = "transparen
         })
         if (response.ok) {
 
-            console.log("Status changed successfuly")
-            alert("Status changed successfuly")
+            console.log("Status changed successfully")
+            alert("Status changed successfully")
             window.location.reload();
 
         }

@@ -54,8 +54,8 @@ function CreateNewItemForm() {
         })
         if (response.ok) {
 
-            alert("Package added successfuly!")
-            setMessage("Package added successfuly!")
+            alert("Package added successfully!")
+            setMessage("Package added successfully!")
 
         }
     }
