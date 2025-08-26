@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
-import BootstrapButton from '../../Components/BootstrapButton';
-import RecipientOrSenderDetails from '../PackageDetails/RecipientOrSenderDetails';
-import StatusDropdownButton from '../../Components/StatusDropDownButton'
 import FilterDropdown from './FilterDropown'
 import AllPackagesList from './AllPackagesTable';
-
-
-
 
 function PackageList() {
     const [packages, setPackages] = useState([]);

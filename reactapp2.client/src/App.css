@@ -1,5 +1,6 @@
 ﻿#root {
     max-width: 1280px;
+    width: 100%;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
@@ -10,3 +11,8 @@ th, td {
     padding-right: 1rem;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

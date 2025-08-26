@@ -9,8 +9,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
 
     return (
-        <>
-
             <Router>
                 <CustomNavBar />
                 <Routes>
@@ -19,10 +17,6 @@ function App() {
                     <Route path="/view-details/:id" element={<PackageDetailsPage />} />
                 </Routes>
             </Router>
-        </>
-
-
-
     );
 
 }

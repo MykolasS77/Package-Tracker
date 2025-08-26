@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:61347",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "C:\\Users\\Mykolo MltPC\\Desktop\\CS projektai\\ReactAndNet\\ReactApp2\\ReactApp2\\ReactApp2.Server\\..\\reactapp2.client",
+"WorkingDirectory": "C:\\Users\\Mykolas\\Desktop\\Coding\\CS Projektai\\Package-tracker\\ReactApp2.Server\\..\\reactapp2.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }

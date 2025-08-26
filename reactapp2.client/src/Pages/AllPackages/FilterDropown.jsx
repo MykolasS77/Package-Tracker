@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-import BootstrapButton from '../../Components/BootstrapButton';
-import RecipientOrSenderDetails from '../PackageDetails/RecipientOrSenderDetails';
-import StatusDropdownButton from '../../Components/StatusDropDownButton'
+
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -18,7 +15,6 @@ function FilterDropdown(props) {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                    
                     <Dropdown.Item onClick={() => props.filterPackages("Created")}>Created</Dropdown.Item>
                     <Dropdown.Item onClick={() => props.filterPackages("Sent")}>Sent</Dropdown.Item>
                     <Dropdown.Item onClick={() => props.filterPackages("Returned")}>Returned</Dropdown.Item>
@@ -39,12 +35,11 @@ function FilterDropdown(props) {
                 </div>
             </Form>
 
-        </div>        
+        </div>
     )
-            
+
     function getPackage(formData) {
-        
-        console.log("Get package from component")
+
         const id = formData.get("id");
         window.location.href += "view-details/" + id
     }

@@ -1,6 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 function CreateNewItemForm() {
@@ -9,7 +11,7 @@ function CreateNewItemForm() {
 
     async function createNewPackage(formData) {
 
-      
+
         const confirmBox = window.confirm(
             "Do you want to add a new package?"
         )
@@ -62,47 +64,61 @@ function CreateNewItemForm() {
 
     return (
         <Form action={createNewPackage}>
-            <Form.Group className="mb-3">
-                <Form.Label>Sender's' First Name</Form.Label>
-                <Form.Control placeholder="Enter sender's first name" name="senderFirstName" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Sender's' Last Name</Form.Label>
-                <Form.Control placeholder="Enter sender's last name" name="senderLastName" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Sender's Adress</Form.Label>
-                <Form.Control placeholder="Enter sender's adress" name="senderAdress" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Sender's Phone</Form.Label>
-                <Form.Control placeholder="Enter sender's phone" name="senderPhone" />
-            </Form.Group>
 
-            <Form.Group className="mb-3">
-                <Form.Label>Recipient's First Name</Form.Label>
-                <Form.Control placeholder="Enter recipient's first name" name="recipientFirstName" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Recipient's Last Name</Form.Label>
-                <Form.Control placeholder="Enter sender's last name" name="recipientLastName" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Recipient's Adress</Form.Label>
-                <Form.Control placeholder="Enter recipient's adress" name="recipientAdress" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Recipient's Phone</Form.Label>
-                <Form.Control placeholder="Enter recipient's phone" name="recipientPhone" />
-            </Form.Group>
+            <Row>
+
+
+
+                <Form.Label>Sender's Information</Form.Label>
+
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Control maxlength="30" placeholder="Enter sender's first name" name="senderFirstName" />
+                </Form.Group>
+
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Control maxlength="30" placeholder="Enter sender's last name" name="senderLastName" />
+                </Form.Group>
+
+
+                <Form.Group className="mb-3">
+                    <Form.Control maxlength="50" placeholder="Enter sender's address" name="senderAdress" />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Control maxlength="12" placeholder="Enter sender's phone number" name="senderPhone" type="number" />
+                </Form.Group>
+
+
+
+                <Form.Label>Recipient's Information</Form.Label>
+
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Control maxlength="30" placeholder="Enter recipient's first name" name="recipientFirstName" />
+                </Form.Group>
+
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Control maxlength="30" placeholder="Enter recipient's last name" name="recipientLastName" />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Control maxlength="50" placeholder="Enter recipient's address" name="recipientAdress" />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Control maxlength="12" placeholder="Enter recipient's phone number" name="recipientPhone" />
+                </Form.Group>
+
+            </Row>
 
             <Button variant="light" type="submit" >
                 Submit
             </Button>
+
             {message ? <p className="text-success mt-3">{message}</p> : null}
+
         </Form>
 
-        
+
     );
 }
 

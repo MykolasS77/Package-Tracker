@@ -8,7 +8,6 @@ function PackageDetailsTable({ details }) {
     return (
         <>
             <h1>Package number: {details.id}</h1>
-
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -29,7 +28,7 @@ function PackageDetailsTable({ details }) {
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Adress</th>
+                        <th>Address</th>
                         <th>Phone Number</th>
                     </tr>
                 </thead>
@@ -49,7 +48,7 @@ function PackageDetailsTable({ details }) {
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Adress</th>
+                        <th>Address</th>
                         <th>Phone Number</th>
                     </tr>
                 </thead>

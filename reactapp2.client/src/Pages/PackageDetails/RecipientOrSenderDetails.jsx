@@ -9,7 +9,7 @@ function RecipientOrSenderDetails({ firstName, lastName, phone, adress}) {
 
             <Dropdown.Menu>
                 <Dropdown.Item disabled >Phone number: { phone }</Dropdown.Item>
-                <Dropdown.Item disabled >Adress: { adress }</Dropdown.Item>
+                <Dropdown.Item disabled >Address: { adress }</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );
