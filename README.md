@@ -53,7 +53,7 @@ Start the application
 dotnet run
 ```
 
-Go to url displayed in the terminal: 
+Go to url displayed in the terminal (You may get an "ERR_CONNECTION_REFUSED" if you are using Chrome. If so, try using a different browser): 
 
 <img width="352" height="106" alt="image" src="https://github.com/user-attachments/assets/a0c7b946-e424-47dc-8a55-fb07b1924bb3" />
 
