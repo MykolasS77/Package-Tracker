@@ -1,0 +1,4 @@
+@PackageTracker.Server_HostAddress = https://localhost:7257
+
+
+GET {{PackageTracker.Server_HostAddress}}/api/packageinformation

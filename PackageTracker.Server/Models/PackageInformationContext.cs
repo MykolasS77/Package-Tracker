@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReactApp2.Server.Models;
+using PackageTracker.Server.Models;
 
 namespace TodoApi.Models;
 

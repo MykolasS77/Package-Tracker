@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ReactApp2.Server.Models;
+using PackageTracker.Server.Models;
 using TodoApi.Models;
 
-namespace ReactApp2.Server.Controllers
+namespace PackageTracker.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
