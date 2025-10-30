@@ -764,3 +764,4 @@ C:\Users\Mykolas\source\repos\MykolasS77\Package-Tracker\ReactApp2.Server\obj\De
 C:\Users\Mykolas\source\repos\MykolasS77\Package-Tracker\ReactApp2.Server\obj\Debug\net9.0\PackageTracker.Server.pdb
 C:\Users\Mykolas\source\repos\MykolasS77\Package-Tracker\ReactApp2.Server\obj\Debug\net9.0\PackageTracker.Server.genruntimeconfig.cache
 C:\Users\Mykolas\source\repos\MykolasS77\Package-Tracker\ReactApp2.Server\obj\Debug\net9.0\ref\PackageTracker.Server.dll
+C:\Users\Mykolas\source\repos\MykolasS77\Package-Tracker\ReactApp2.Server\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

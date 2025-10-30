@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PackageTracker.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e161a1bbdd3eb560b6fe63499fb96c5d6decb1f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+21e930ccdcd22185bff89ec1b70d4b5b44ba34e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("PackageTracker.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PackageTracker.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
