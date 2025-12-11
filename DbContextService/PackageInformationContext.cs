@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PackageTracker.Server.Models;
+using ModelsLibrary.Models;
 
-namespace TodoApi.Models;
+namespace DbContextService; 
 
 public class PackageInformationContext : DbContext
 {
@@ -32,4 +32,6 @@ public class PackageInformationContext : DbContext
 
     public DbSet<PackageInformation> PackageInformations { get; set; } = null!;
     public DbSet<StatusHistory> StatusHistories { get; set; } = null!;
+
+
 }

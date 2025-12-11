@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PackageTracker.Server.Models;
-using TodoApi.Models;
+using ModelsLibrary.Models;
+using DbContextService;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -25,8 +25,6 @@ namespace PackageTracker.Server.Controllers
                 .Include(p => p.TimeStampHistories)
                 .ToListAsync();
         }
-
-
 
 
         [HttpGet("{id}")]
@@ -106,7 +104,13 @@ namespace PackageTracker.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<PackageInformation>> PostPackage(PackageInformation packageItem)
         {
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Invalid request.");
+            }
+            Console.WriteLine("Invalid request.");
             _context.PackageInformations.Add(packageItem);
+            
 
             await PostTimeStamp(packageItem.TimeStampHistories.FirstOrDefault() ?? new StatusHistory
             {
@@ -155,6 +159,7 @@ namespace PackageTracker.Server.Controllers
         public async Task<ActionResult<StatusHistory>> PostTimeStamp(StatusHistory newItem)
         {
             _context.StatusHistories.Add(newItem);
+            
             var package = await _context.PackageInformations.FirstOrDefaultAsync(u => u.Id == newItem.PackageRef);
 
             if (package != null)

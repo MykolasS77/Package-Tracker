@@ -1,12 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace PackageTracker.Server.Models
+namespace ModelsLibrary.Models
 {
     public class StatusHistory
     {
         public int Id { get; set; }
+        [Required]
         public string? Status { get; set; }
-
+        [Required]
         public int PackageRef { get; set; }
 
         [JsonIgnore]

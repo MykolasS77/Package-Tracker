@@ -36,7 +36,7 @@ function PackageDetailsTable({ details }) {
                     <tr>
                         <td>{details.sender.firstName}</td>
                         <td>{details.sender.lastName}</td>
-                        <td>{details.sender.adress}</td>
+                        <td>{details.sender.address}</td>
                         <td>{details.sender.phone}</td>
                     </tr>
                 </tbody>
@@ -56,7 +56,7 @@ function PackageDetailsTable({ details }) {
                     <tr>
                         <td>{details.recipient.firstName}</td>
                         <td>{details.recipient.lastName}</td>
-                        <td>{details.recipient.adress}</td>
+                        <td>{details.recipient.address}</td>
                         <td>{details.recipient.phone}</td>
                     </tr>
                 </tbody>

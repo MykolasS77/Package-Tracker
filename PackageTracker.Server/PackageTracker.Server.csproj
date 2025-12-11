@@ -24,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary\ModelsLibrary.csproj" />
+    <ProjectReference Include="..\DbContextService\DbContextService.csproj" />
     <ProjectReference Include="..\PackageTracker.client\PackageTracker.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

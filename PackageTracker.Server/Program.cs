@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using TodoApi.Models;
+using DbContextService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

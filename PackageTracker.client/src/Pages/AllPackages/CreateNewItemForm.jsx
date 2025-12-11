@@ -5,9 +5,28 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
+function renderErrorMessages(errorMessagesDict) {
+    
+    const errorMessages = Object.keys(errorMessagesDict).map((obj, i) => {
+        return (
+            <div className="text-warning mt-3">
+                {errorMessagesDict[obj]}
+            </div>
+        )
+    })
+    return errorMessages
+}
+        
+            
+    
+
+
+
 function CreateNewItemForm() {
 
     const [message, setMessage] = useState(null)
+    const [messageColour, setMessageColour] = useState(null)
+    const [errorMessages, setErrorMessages] = useState([])
 
     async function createNewPackage(formData) {
 
@@ -17,19 +36,21 @@ function CreateNewItemForm() {
         )
 
         if (confirmBox === false) {
-            console.log("Package creation canceled")
+            setMessage("Package added successfully!")
             return
         }
 
 
         const senderFirstName = formData.get("senderFirstName");
         const senderLastName = formData.get("senderLastName");
-        const senderAdress = formData.get("senderAdress");
+        const senderAddress = formData.get("senderAddress");
         const senderPhone = formData.get("senderPhone");
         const recipientFirstName = formData.get("recipientFirstName");
         const recipientLastName = formData.get("recipientLastName");
-        const recipientAdress = formData.get("recipientAdress");
+        const recipientAddress = formData.get("recipientAddress");
         const recipientPhone = formData.get("recipientPhone");
+
+
 
         const response = await fetch('/api/packageinformation', {
             method: 'POST',
@@ -41,13 +62,13 @@ function CreateNewItemForm() {
                 "sender": {
                     "firstName": senderFirstName,
                     "lastName": senderLastName,
-                    "adress": senderAdress,
+                    "address": senderAddress,
                     "phone": senderPhone
                 },
                 "recipient": {
                     "firstName": recipientFirstName,
                     "lastName": recipientLastName,
-                    "adress": recipientAdress,
+                    "address": recipientAddress,
                     "phone": recipientPhone
                 },
                 "currentStatus": "Created"
@@ -55,20 +76,33 @@ function CreateNewItemForm() {
 
         })
         if (response.ok) {
-
-            alert("Package added successfully!")
             setMessage("Package added successfully!")
+            setMessageColour("success")
+            setErrorMessages([])
+            console.log("text-" + messageColour + " mt-3");
+            console.log(messageColour);
 
         }
+        else {
+            const errorData = await response.json();
+            setMessage(errorData["title"])
+            setMessageColour("danger")
+            setErrorMessages([errorData["errors"]])
+
+
+
+
+        }
+
+
+
+
     }
 
     return (
         <Form action={createNewPackage}>
 
             <Row>
-
-
-
                 <Form.Label>Sender's Information</Form.Label>
 
                 <Form.Group as={Col} className="mb-3">
@@ -81,7 +115,7 @@ function CreateNewItemForm() {
 
 
                 <Form.Group className="mb-3">
-                    <Form.Control maxlength="50" placeholder="Enter sender's address" name="senderAdress" />
+                    <Form.Control maxlength="50" placeholder="Enter sender's address" name="senderAddress" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -101,7 +135,7 @@ function CreateNewItemForm() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Control maxlength="50" placeholder="Enter recipient's address" name="recipientAdress" />
+                    <Form.Control maxlength="50" placeholder="Enter recipient's address" name="recipientAddress" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -114,7 +148,10 @@ function CreateNewItemForm() {
                 Submit
             </Button>
 
-            {message ? <p className="text-success mt-3">{message}</p> : null}
+            {message ? <p className={"text-" + messageColour + " mt-3"}>{message}</p> : null}
+
+            {errorMessages.length > 0 ? renderErrorMessages(errorMessages[0]) : null}
+
 
         </Form>
 

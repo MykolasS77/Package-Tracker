@@ -1,15 +1,18 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace PackageTracker.Server.Models
+namespace ModelsLibrary.Models
 {
     public class PackageInformation
     {
-        public int Id { get; set; }  // Keep this visible so client knows the new package Id
+        public int Id { get; set; }  
+        [Required]
         public SenderInformation Sender { get; set; } = null!;
-
+        [Required]
         public RecipientInformation Recipient { get; set; } = null!;
 
-        public string CurrentStatus { get; set; } = null!;
+        [Required]
+        public string CurrentStatus { get; set; } = null!; 
 
         [JsonIgnore]
         public DateTime DisplayDate { get; set; } = DateTime.Now;
