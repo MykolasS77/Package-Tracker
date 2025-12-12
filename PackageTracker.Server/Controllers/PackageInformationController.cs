@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ModelsLibrary.Models;
 using DbContextService;
+using DatabaseServiceContracts;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -9,32 +10,28 @@ namespace PackageTracker.Server.Controllers
     [ApiController]
     public class PackageInformationController : ControllerBase
     {
-        private readonly PackageInformationContext _context;
+        private readonly DatabaseContext _context;
+        private readonly IDatabaseService _databaseService;
 
-        public PackageInformationController(PackageInformationContext context)
+        public PackageInformationController(DatabaseContext context, IDatabaseService databaseService)
         {
             _context = context;
+            _databaseService = databaseService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PackageInformation>>> GetPackages()
         {
-            return await _context.PackageInformations
-                .Include(p => p.Sender)
-                .Include(p => p.Recipient)
-                .Include(p => p.TimeStampHistories)
-                .ToListAsync();
+            List<PackageInformation> packages = await _databaseService.GetAllPackages();
+            return Ok(packages);
         }
 
 
         [HttpGet("{id}")]
         public async Task<ActionResult<PackageInformation>> GetPackage(long id)
         {
-            var packageItem = await _context.PackageInformations
-                .Include(p => p.Sender)
-                .Include(p => p.Recipient)
-                .Include(p => p.TimeStampHistories)
-                .FirstOrDefaultAsync(p => p.Id == id);
+          
+            PackageInformation? packageItem = await _databaseService.GetOnePackage(id);
 
             if (packageItem == null || packageItem.TimeStampHistories == null)
             {
@@ -48,12 +45,8 @@ namespace PackageTracker.Server.Controllers
         public async Task<ActionResult<PackageInformation>> FilterPackages(string filter)
         {
 
-            var packageItem = await _context.PackageInformations
-            .Include(p => p.Sender)
-            .Include(p => p.Recipient)
-            .Include(p => p.TimeStampHistories)
-            .Where(p => p.CurrentStatus == filter)
-            .ToListAsync();
+            List<PackageInformation> packageItem = await _databaseService.FilterPackages(filter);
+           
 
             if (packageItem == null)
             {
@@ -66,86 +59,45 @@ namespace PackageTracker.Server.Controllers
         }
 
 
-
-
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPackage(long id, PackageInformation packageItem)
-        {
-            if (id != packageItem.Id)
-            {
-                return BadRequest();
-            }
-
-
-
-            _context.Entry(packageItem).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PackageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-
         [HttpPost]
-        public async Task<ActionResult<PackageInformation>> PostPackage(PackageInformation packageItem)
+        public async Task<ActionResult<PackageInformation>> PostPackage(PackageInformation newItem)
         {
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("Invalid request.");
+                throw new InvalidOperationException("Invalid request.");
+                
             }
-            Console.WriteLine("Invalid request.");
-            _context.PackageInformations.Add(packageItem);
-            
 
-            await PostTimeStamp(packageItem.TimeStampHistories.FirstOrDefault() ?? new StatusHistory
+            try
             {
-                PackageRef = packageItem.Id,
-                Status = packageItem.CurrentStatus
-            });
+                _databaseService.PostPackage(newItem);
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.ToString(), "Error while posting to database");
+                return BadRequest();
+            }
 
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPackage", new { id = packageItem.Id }, packageItem);
+            return CreatedAtAction("GetPackage", new { id = newItem.Id }, newItem);
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePackage(long id)
         {
-            var packageItem = await _context.PackageInformations.FindAsync(id);
+            PackageInformation? packageItem = await _databaseService.GetOnePackage(id);
             if (packageItem == null)
             {
                 return NotFound();
             }
 
-            _context.PackageInformations.Remove(packageItem);
-            await _context.SaveChangesAsync();
+            _databaseService.DeletePackage(packageItem);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpGet("statushistory/{id}")]
-        public async Task<ActionResult<PackageInformation>> GetTimeStampInformation(long id)
+        public async Task<ActionResult<PackageInformation>> UpdateTimeStampInformation(long id)
         {
-            var packageItem = await _context.PackageInformations
-
-                .Include(p => p.TimeStampHistories)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            PackageInformation? packageItem = await _databaseService.UpdateTimeStampInformation(id);
 
             if (packageItem == null || packageItem.TimeStampHistories == null)
             {
@@ -158,24 +110,10 @@ namespace PackageTracker.Server.Controllers
         [HttpPost("statushistory")]
         public async Task<ActionResult<StatusHistory>> PostTimeStamp(StatusHistory newItem)
         {
-            _context.StatusHistories.Add(newItem);
-            
-            var package = await _context.PackageInformations.FirstOrDefaultAsync(u => u.Id == newItem.PackageRef);
-
-            if (package != null)
-            {
-                package.CurrentStatus = newItem.Status;
-            }
-
-            await _context.SaveChangesAsync();
-
+            _databaseService.UpdatePackageStatus(newItem);
+         
             return newItem;
         }
 
-
-        private bool PackageExists(long id)
-        {
-            return _context.PackageInformations.Any(e => e.Id == id);
-        }
     }
 }

@@ -3,9 +3,9 @@ using ModelsLibrary.Models;
 
 namespace DbContextService; 
 
-public class PackageInformationContext : DbContext
+public class DatabaseContext : DbContext
 {
-    public PackageInformationContext(DbContextOptions<PackageInformationContext> options)
+    public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
     }

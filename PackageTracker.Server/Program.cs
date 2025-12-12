@@ -1,6 +1,8 @@
+using DatabaseServiceContracts;
+using DbContextService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using DbContextService;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<PackageInformationContext>(opt =>
+builder.Services.AddDbContext<DatabaseContext>(opt =>
     opt.UseInMemoryDatabase("PackageList"));
 builder.Services.AddSwaggerGen(c =>
 {
@@ -20,6 +22,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 
 });
+builder.Services.AddScoped<IDatabaseService, DatabaseLogic>();
 
 var app = builder.Build();
 

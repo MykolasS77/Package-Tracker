@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "PackageTracker.client", "PackageTracker.client\PackageTracker.client.esproj", "{E4101951-7047-B915-87A4-5C5432965880}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsLibrary", "ClassLibra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextService", "DbContextService\DbContextService.csproj", "{60A05786-3882-474B-B88F-7847C799F848}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDatabaseService", "IDatabaseService\IDatabaseService.csproj", "{3DA77B93-3B44-41B5-AF2E-A09E461EC110}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseServiceContracts", "IDatabaseService\DatabaseServiceContracts.csproj", "{3DA77B93-3B44-41B5-AF2E-A09E461EC110}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 function renderErrorMessages(errorMessagesDict) {
     
-    const errorMessages = Object.keys(errorMessagesDict).map((obj, i) => {
+    const errorMessages = Object.keys(errorMessagesDict).map((obj) => {
         return (
             <div className="text-warning mt-3">
                 {errorMessagesDict[obj]}
@@ -18,9 +18,6 @@ function renderErrorMessages(errorMessagesDict) {
 }
         
             
-    
-
-
 
 function CreateNewItemForm() {
 
@@ -41,14 +38,14 @@ function CreateNewItemForm() {
         }
 
 
-        const senderFirstName = formData.get("senderFirstName");
-        const senderLastName = formData.get("senderLastName");
+        const senderFirstName = formData.get("senderFirstName").trim();
+        const senderLastName = formData.get("senderLastName").trim();
         const senderAddress = formData.get("senderAddress");
-        const senderPhone = formData.get("senderPhone");
-        const recipientFirstName = formData.get("recipientFirstName");
-        const recipientLastName = formData.get("recipientLastName");
+        const senderPhone = formData.get("senderPhone").trim();
+        const recipientFirstName = formData.get("recipientFirstName").trim();
+        const recipientLastName = formData.get("recipientLastName").trim();
         const recipientAddress = formData.get("recipientAddress");
-        const recipientPhone = formData.get("recipientPhone");
+        const recipientPhone = formData.get("recipientPhone").trim();
 
 
 
