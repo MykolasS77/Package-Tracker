@@ -47,15 +47,27 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/api/packageinformation': {
+            '^/api/getallpackages': {
                 target,
                 secure: false
             },
-            '^/api/packageinformation/statushistory': {
+            '^/api/getsinglepackage': {
+                target,
+                secure: false
+            },
+            '^/api/statushistory': {
                 target,
                 secure: false
             },
             '^/api/filterpackages': {
+                target,
+                secure: false
+            },
+            '^/api/createpackage': {
+                target,
+                secure: false
+            },
+            '^/api/deletepackage': {
                 target,
                 secure: false
             },

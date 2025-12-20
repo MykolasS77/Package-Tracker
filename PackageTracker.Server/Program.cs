@@ -3,8 +3,6 @@ using DbContextService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -26,7 +24,13 @@ builder.Services.AddScoped<IDatabaseService, DatabaseLogic>();
 
 var app = builder.Build();
 
-app.UseDefaultFiles();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    db.Database.EnsureCreated();
+}
+
+    app.UseDefaultFiles();
 app.MapStaticAssets();
 
 if (app.Environment.IsDevelopment())

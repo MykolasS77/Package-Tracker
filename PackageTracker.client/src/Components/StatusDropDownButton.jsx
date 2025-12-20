@@ -1,4 +1,5 @@
 import Dropdown from 'react-bootstrap/Dropdown';
+import changePackageStatusRequest from '../BackendRequestMethods/changePackageStatusRequest';
 
 function StatusDropdownButton({ currentStatus, packageRef, variant = "transparent", text }) {
 
@@ -17,18 +18,7 @@ function StatusDropdownButton({ currentStatus, packageRef, variant = "transparen
             return
         }
 
-        const response = await fetch('/api/packageinformation/statushistory', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "status": action,
-                "packageRef": packageRef
-            })
-
-        })
+        const response = await changePackageStatusRequest({ action, packageRef })
         if (response.ok) {
 
             console.log("Status changed successfully")
@@ -40,6 +30,8 @@ function StatusDropdownButton({ currentStatus, packageRef, variant = "transparen
     }
 
     function returnDropDownItems(currentStatus) {
+
+        console.log(currentStatus)
 
         if (currentStatus == "Created") {
             return (<>

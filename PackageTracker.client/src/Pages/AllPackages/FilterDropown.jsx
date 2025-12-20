@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 
-
-
 function FilterDropdown(props) {
     return (
         <div className="d-flex align-items-center text-center justify-content-start">
@@ -13,7 +11,7 @@ function FilterDropdown(props) {
                 <Dropdown.Toggle variant="light" id="dropdown-basic" className="my-3">
                     Filter based on status
                 </Dropdown.Toggle>
-
+                
                 <Dropdown.Menu>
                     <Dropdown.Item onClick={() => props.filterPackages("Created")}>Created</Dropdown.Item>
                     <Dropdown.Item onClick={() => props.filterPackages("Sent")}>Sent</Dropdown.Item>

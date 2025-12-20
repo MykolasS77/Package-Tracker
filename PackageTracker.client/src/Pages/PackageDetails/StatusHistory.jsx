@@ -2,6 +2,7 @@
 import { useParams } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import { useEffect, useState } from 'react';
+import getStatusHistoryRequest from '../../BackendRequestMethods/getStatusHistoryRequest'
 function StatusHistory() {
 
     const [history, setHistory] = useState([]);
@@ -31,16 +32,10 @@ function StatusHistory() {
         </Table>
 
     async function getStatusHistory() {
-        let targeturl = '/api/packageinformation/statushistory/' + id;
+        const data = await getStatusHistoryRequest(id);
+        
+        setHistory(data);
 
-        const response = await fetch(targeturl)
-        if (response.ok) {
-
-            const data = await response.json();
-          
-            setHistory(data)
-
-        }
     }
 
     return (

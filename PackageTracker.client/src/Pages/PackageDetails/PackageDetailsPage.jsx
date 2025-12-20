@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PackageDetailsTable from './PackageDetailsTable';
+import getSinglePackageRequest from '../../BackendRequestMethods/getSinglePackageRequest'
 
 
 function PackageDetails() {
@@ -24,19 +25,9 @@ function PackageDetails() {
 
     async function getPackage() {
 
-        let url = "/api/packageinformation/" + id
+        const data = await getSinglePackageRequest(id)
+        setDetails(data)
         
-        const response = await fetch(url)
-        if (response.ok) {
-
-            const data = await response.json();
-
-            setDetails(data)
-        }
-        else {
-            alert("Package not found.")
-            window.location.href = "/" 
-        }
     }
 
 }

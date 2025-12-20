@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ModelsLibrary.DTOs;
 using ModelsLibrary.Models;
 
 
@@ -6,18 +6,16 @@ namespace DatabaseServiceContracts
 {
     public interface IDatabaseService
     {
-        public Task<List<PackageInformation>> GetAllPackages();
-        public Task<PackageInformation?> GetOnePackage(long id);
+        public Task<List<PackageInformationResponse>> GetAllPackagesResponse();
+        public Task<PackageInformationResponse?> GetOnePackageResponse(long id);
 
-        public Task<List<PackageInformation>> FilterPackages(string filter);
+        public Task<List<PackageInformationResponse>> FilterPackages(string filter);
 
-        public void PostPackage(PackageInformation packageItem);
-        public void DeletePackage(PackageInformation packageItem);
+        public void PostPackage(PackageInformationRequest packageItem);
+        public void DeletePackage(long id);
 
-        public Task<PackageInformation?> UpdateTimeStampInformation(long id);
-        public StatusHistory UpdatePackageStatus(StatusHistory newItem);
-
-
+        public ICollection<StatusHistoryResponse> GetTimestampHistories(long id);
+        public StatusHistory? AddNewStatusToHistoryTable(StatusHistoryRequest newItem);
 
     }
 }

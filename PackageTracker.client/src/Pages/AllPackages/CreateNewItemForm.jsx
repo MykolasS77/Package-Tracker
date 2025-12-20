@@ -3,10 +3,11 @@ import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import newPackagePostRequest from '../../BackendRequestMethods/newPackagePostRequest';
 
 
 function renderErrorMessages(errorMessagesDict) {
-    
+
     const errorMessages = Object.keys(errorMessagesDict).map((obj) => {
         return (
             <div className="text-warning mt-3">
@@ -16,8 +17,8 @@ function renderErrorMessages(errorMessagesDict) {
     })
     return errorMessages
 }
-        
-            
+
+
 
 function CreateNewItemForm() {
 
@@ -40,38 +41,15 @@ function CreateNewItemForm() {
 
         const senderFirstName = formData.get("senderFirstName").trim();
         const senderLastName = formData.get("senderLastName").trim();
-        const senderAddress = formData.get("senderAddress");
+        const senderAddress = formData.get("senderAddress").trim();
         const senderPhone = formData.get("senderPhone").trim();
         const recipientFirstName = formData.get("recipientFirstName").trim();
         const recipientLastName = formData.get("recipientLastName").trim();
-        const recipientAddress = formData.get("recipientAddress");
+        const recipientAddress = formData.get("recipientAddress").trim();
         const recipientPhone = formData.get("recipientPhone").trim();
 
+        const response = await newPackagePostRequest({ senderFirstName, senderLastName, senderAddress, senderPhone, recipientFirstName, recipientLastName, recipientAddress, recipientPhone })
 
-
-        const response = await fetch('/api/packageinformation', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "sender": {
-                    "firstName": senderFirstName,
-                    "lastName": senderLastName,
-                    "address": senderAddress,
-                    "phone": senderPhone
-                },
-                "recipient": {
-                    "firstName": recipientFirstName,
-                    "lastName": recipientLastName,
-                    "address": recipientAddress,
-                    "phone": recipientPhone
-                },
-                "currentStatus": "Created"
-            })
-
-        })
         if (response.ok) {
             setMessage("Package added successfully!")
             setMessageColour("success")
@@ -86,14 +64,7 @@ function CreateNewItemForm() {
             setMessageColour("danger")
             setErrorMessages([errorData["errors"]])
 
-
-
-
         }
-
-
-
-
     }
 
     return (
@@ -116,7 +87,7 @@ function CreateNewItemForm() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Control maxlength="12" placeholder="Enter sender's phone number" name="senderPhone" type="number" />
+                    <Form.Control maxlength="15" placeholder="Enter sender's phone number" name="senderPhone" />
                 </Form.Group>
 
 
@@ -136,7 +107,7 @@ function CreateNewItemForm() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Control maxlength="12" placeholder="Enter recipient's phone number" name="recipientPhone" />
+                    <Form.Control maxlength="15" placeholder="Enter recipient's phone number" name="recipientPhone" />
                 </Form.Group>
 
             </Row>

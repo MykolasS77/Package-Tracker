@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ModelsLibrary.DTOs;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace ModelsLibrary.Models
@@ -7,9 +8,9 @@ namespace ModelsLibrary.Models
     {
         public int Id { get; set; }
         [Required]
-        public string? Status { get; set; }
+        public PackageStatus? Status { get; set; }
         [Required]
-        public int PackageRef { get; set; }
+        public int? PackageRef { get; set; }
 
         [JsonIgnore]
         public PackageInformation? Package { get; set; }
@@ -18,6 +19,8 @@ namespace ModelsLibrary.Models
         public DateTime DisplayDate { get; set; } = DateTime.Now;
 
         public string DateOfThisStatus => DisplayDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+      
 
     }
 }

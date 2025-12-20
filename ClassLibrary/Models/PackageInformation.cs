@@ -7,19 +7,19 @@ namespace ModelsLibrary.Models
     {
         public int Id { get; set; }  
         [Required]
-        public SenderInformation Sender { get; set; } = null!;
+        public SenderInformation? Sender { get; set; }
         [Required]
-        public RecipientInformation Recipient { get; set; } = null!;
+        public RecipientInformation? Recipient { get; set; }
 
         [Required]
-        public string CurrentStatus { get; set; } = null!; 
+        public PackageStatus? CurrentStatus { get; set; } 
 
         [JsonIgnore]
         public DateTime DisplayDate { get; set; } = DateTime.Now;
 
         public string DisplayDateFormatted => DisplayDate.ToString("yyyy-MM-dd HH:mm:ss");
 
-        public ICollection<StatusHistory> TimeStampHistories { get; } = new List<StatusHistory>();
+        public ICollection<StatusHistory> TimeStampHistories { get; set; } = new List<StatusHistory>();
 
     }
 }

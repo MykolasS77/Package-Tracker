@@ -2,9 +2,11 @@
 import BootstrapButton from '../../Components/BootstrapButton';
 import RecipientOrSenderDetails from '../PackageDetails/RecipientOrSenderDetails';
 import StatusDropdownButton from '../../Components/StatusDropDownButton'
+import deletePackage from '../../BackendRequestMethods/deletePackageRequest'
+
 
 function AllItems({ packages }) {
-    console.log(packages);
+    
     return (
         <table className="table table-striped " aria-labelledby="tableLabel">
             <thead>
@@ -29,6 +31,7 @@ function AllItems({ packages }) {
                         <th><RecipientOrSenderDetails firstName={pkg.recipient.firstName} lastName={pkg.recipient.lastName} address={pkg.recipient.address} phone={pkg.recipient.phone} /></th>
                         <th>{pkg.timeStampHistories[0].dateOfThisStatus}</th>
                         <th><BootstrapButton content={"View"} href={"/view-details/" + pkg.id} variant="light" /></th>
+                        <th><BootstrapButton content={"Delete Package"} onClick={() => deletePackage(pkg.id)} variant="danger" /></th>
 
                     </tr>
                 </thead>
@@ -38,6 +41,7 @@ function AllItems({ packages }) {
 
     )
 
+   
 
 
 }
