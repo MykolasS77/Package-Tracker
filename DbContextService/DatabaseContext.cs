@@ -39,7 +39,7 @@ public class DatabaseContext : DbContext
             PackageInformation package1 = new PackageInformation()
             {
                 Id = id,
-                CurrentStatus = 0,
+                //CurrentStatus = 0,
 
             };
 

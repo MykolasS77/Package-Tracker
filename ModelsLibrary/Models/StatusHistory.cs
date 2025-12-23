@@ -9,6 +9,7 @@ namespace ModelsLibrary.Models
         public int Id { get; set; }
         [Required]
         public PackageStatus? Status { get; set; }
+
         [Required]
         public int? PackageRef { get; set; }
 

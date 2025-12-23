@@ -44,7 +44,7 @@ namespace PackageTracker.Server.Controllers
                 throw new InvalidOperationException("Error with StatusHistoryRequest");
             }
 
-            StatusHistory? updatedItem = _databaseService.AddNewStatusToHistoryTable(newItem);
+            StatusHistory? updatedItem = _databaseService.UpdatePackageStatus(newItem);
 
             if (updatedItem == null) { 
                 throw new ArgumentNullException(nameof(newItem));

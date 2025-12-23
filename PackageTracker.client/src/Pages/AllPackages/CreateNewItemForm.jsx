@@ -54,8 +54,7 @@ function CreateNewItemForm() {
             setMessage("Package added successfully!")
             setMessageColour("success")
             setErrorMessages([])
-            console.log("text-" + messageColour + " mt-3");
-            console.log(messageColour);
+            
 
         }
         else {

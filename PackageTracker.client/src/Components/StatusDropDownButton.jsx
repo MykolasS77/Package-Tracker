@@ -14,14 +14,15 @@ function StatusDropdownButton({ currentStatus, packageRef, variant = "transparen
         )
 
         if (confirmBox === false) {
-            console.log("Package status change canceled")
+            
+            alert("Package status change canceled")
             return
         }
 
         const response = await changePackageStatusRequest({ action, packageRef })
         if (response.ok) {
 
-            console.log("Status changed successfully")
+            
             alert("Status changed successfully")
             window.location.reload();
 
@@ -31,7 +32,7 @@ function StatusDropdownButton({ currentStatus, packageRef, variant = "transparen
 
     function returnDropDownItems(currentStatus) {
 
-        console.log(currentStatus)
+        
 
         if (currentStatus == "Created") {
             return (<>

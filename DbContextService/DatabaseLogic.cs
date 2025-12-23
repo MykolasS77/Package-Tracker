@@ -42,21 +42,19 @@ namespace DbContextService
                        Phone = p.Recipient.Phone,
 
                    },
-                   CurrentStatus = p.CurrentStatus.ToString(),
+                   CurrentStatus = p.TimeStampHistories.Last().Status.ToString(),
                    TimeStampHistories = p.TimeStampHistories.Select(h => new StatusHistoryResponse
                    {
                        Status = h.Status.ToString(),
                        DisplayDate = h.DisplayDate,
                        DateOfThisStatus = h.DateOfThisStatus,
                    }).ToList()
+                   
                });
 
         }
 
-        /// <summary>
-        /// Gets a list of packages ordered by id.
-        /// </summary>
-        /// <returns></returns>
+       
         public Task<List<PackageInformationResponse>> GetAllPackagesResponse() {
 
             return CreatePackageInformationResponseList().OrderBy(p => p.Id).ToListAsync();
@@ -73,10 +71,7 @@ namespace DbContextService
         }
 
 
-        /// <summary>
-        /// Gets a filtered packages list based on status.
-        /// </summary>
-        /// <param name="filter">A string value that should match one of the arguments from the enum list in PackageStatus.cs</param>
+        
         public Task<List<PackageInformationResponse>> FilterPackages(string filter)
         {
             if (filter == null)
@@ -88,11 +83,7 @@ namespace DbContextService
 
         }
 
-        /// <summary>
-        /// Adds a new package to a database.
-        /// </summary>
-        /// <param name="packageItem">Details on new package provided by the client.</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        
         public void PostPackage(PackageInformationRequest packageItem)
         {
             if(packageItem == null)
@@ -125,7 +116,7 @@ namespace DbContextService
                     Phone = packageItem.Recipient.Phone,
 
                 },
-                CurrentStatus = PackageStatusMethods.StringToEnumConvert(packageItem.CurrentStatus)
+                
             };
 
             try
@@ -143,7 +134,7 @@ namespace DbContextService
                     _context.StatusHistories.Add(new StatusHistory
                     {
                         PackageRef = newItem.Id,
-                        Status = newItem.CurrentStatus
+                        Status = PackageStatus.Created
                     });
                 }
                 catch (Exception ex)
@@ -168,10 +159,6 @@ namespace DbContextService
             _context.SaveChangesAsync();
         }
 
-
-        /// <summary>
-        /// Gets timestamp history data which is used for generating package status history table.
-        /// </summary>
         public ICollection<StatusHistoryResponse> GetTimestampHistories(long id)
         {
 
@@ -191,13 +178,8 @@ namespace DbContextService
             return packageItemTimestampHistories;
         }
 
-        /// <summary>
-        /// Creates a new status to status history table for specific package.
-        /// </summary>
-        /// <param name="newItem"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public StatusHistory AddNewStatusToHistoryTable(StatusHistoryRequest? newItem)
+        
+        public StatusHistory UpdatePackageStatus(StatusHistoryRequest? newItem)
         {
             
             if (newItem == null || newItem.Status == null || newItem.PackageRef == null) {
@@ -211,37 +193,12 @@ namespace DbContextService
 
             };
 
-            UpdateCurrentStatus(newItem);
-
             _context.StatusHistories.Add(newPackage);
 
             _context.SaveChangesAsync();
 
             return newPackage;
         }
-
-        /// <summary>
-        /// Updates the current package status for PackageInformation object
-        /// </summary>
-        /// <param name="newItem"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="Exception"></exception>
-        private void UpdateCurrentStatus(StatusHistoryRequest? newItem)
-        {
-            if (newItem == null || newItem.Status == null) { 
-                throw new ArgumentNullException(nameof(newItem));
-            }
-            Task<PackageInformation?> package = _context.PackageInformations.FirstOrDefaultAsync(u => u.Id == newItem.PackageRef);
-
-            if (package.Result == null)
-            {
-                throw new Exception("Record not found");
-                
-            }
-            package.Result.CurrentStatus = PackageStatusMethods.StringToEnumConvert(newItem.Status);
-            _context.SaveChangesAsync();
-        }
-
 
     }
 }

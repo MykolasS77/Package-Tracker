@@ -5,7 +5,7 @@ export default async function deletePackage(packageId) {
     )
 
     if (confirmBox === false) {
-        console.log("Package status deletion canceled")
+        alert("Package status deletion canceled")
         return
     }
 

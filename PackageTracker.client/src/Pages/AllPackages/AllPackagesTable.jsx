@@ -6,7 +6,9 @@ import deletePackage from '../../BackendRequestMethods/deletePackageRequest'
 
 
 function AllItems({ packages }) {
-    
+
+   
+
     return (
         <table className="table table-striped " aria-labelledby="tableLabel">
             <thead>
