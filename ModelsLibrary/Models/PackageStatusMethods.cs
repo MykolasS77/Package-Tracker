@@ -1,30 +1,19 @@
-﻿namespace ModelsLibrary.Models
+﻿using ModelsLibrary.Validation;
+using System.Drawing;
+
+namespace ModelsLibrary.Models
 {
     public static class PackageStatusMethods
     {
-        public static PackageStatus StringToEnumConvert(string value)
+        public static PackageStatus TryStringToEnumConvert(string value)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException("String value for enum conversion not provided.");
-            }
+            ValidationMethods.ValidateStatusFilterValue(value);
 
-            switch (value)
-            {
-                case "Created":
-                    return PackageStatus.Created;
-                case "Sent":
-                    return PackageStatus.Sent;
-                case "Accepted":
-                    return PackageStatus.Accepted;
-                case "Canceled":
-                    return PackageStatus.Canceled;
-                case "Returned":
-                    return PackageStatus.Returned;
-            }
+            return (PackageStatus) Enum.Parse(typeof(PackageStatus), value);
 
-            throw new ArgumentException($"Value: {value} did not match any cases.");
         }
+
+      
     }
   
 

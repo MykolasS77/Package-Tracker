@@ -13,7 +13,7 @@ namespace PackageTracker.Server.Controllers
     {
         private readonly IDatabaseService _databaseService;
 
-        public CreatePackageController( IDatabaseService databaseService)
+        public CreatePackageController(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
@@ -25,17 +25,10 @@ namespace PackageTracker.Server.Controllers
             if (!ModelState.IsValid)
             {
                 throw new InvalidOperationException("Invalid request.");
-                
+
             }
 
-            try
-            {
-                _databaseService.PostPackage(newItem);
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex.ToString(), "Error while posting to database");
-                return BadRequest();
-            }
+            _databaseService.PostPackage(newItem);
 
             return CreatedAtAction(nameof(CreateNewPackage), new { id = newItem.Id }, newItem);
 

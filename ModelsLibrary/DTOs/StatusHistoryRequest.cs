@@ -9,9 +9,9 @@ namespace ModelsLibrary.DTOs
 {
     public class StatusHistoryRequest
     {
-        [Required]
+        [Required(ErrorMessage = "{0} string value missing in StatusHistoryRequest")]
         public string? Status { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} int value missing in StatusHistoryRequest")]
         public int? PackageRef { get; set; }
     }
 }

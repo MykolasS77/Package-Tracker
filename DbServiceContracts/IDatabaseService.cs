@@ -20,7 +20,7 @@ namespace DatabaseServiceContracts
         /// Gets a filtered packages list based on specified status.
         /// </summary>
         /// <param name="filter">A string value that should match one of the arguments from the enum list in PackageStatus.cs</param>
-        public Task<List<PackageInformationResponse>> FilterPackages(string filter);
+        public Task<List<PackageInformationResponse>> FilterPackagesByStatus(string filter);
         /// <summary>
         /// Adds a new package to a database.
         /// </summary>

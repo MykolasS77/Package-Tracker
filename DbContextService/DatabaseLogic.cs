@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ModelsLibrary.DTOs;
 using ModelsLibrary.Models;
-
-
+using ModelsLibrary.Validation;
 
 namespace DbContextService
 {
@@ -15,14 +14,27 @@ namespace DbContextService
         {
             _context = context;
         }
+
+        private void TrySaveChanges(string errorMessage = "Error while trying to save changes after database operation.")
+        {
+            try
+            {
+                _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString(), errorMessage);
+            }
+        }
+
         /// <summary>
         /// Gets a list of package data in DTO format, which can later be used for display of all packages, getting single package data, filtering out packages etc.
         /// </summary>
         private IQueryable<PackageInformationResponse> CreatePackageInformationResponseList()
         {
-            
+
             return _context.PackageInformations
-               .Select(p =>             
+               .Select(p =>
                new PackageInformationResponse()
                {
                    Id = p.Id,
@@ -49,13 +61,14 @@ namespace DbContextService
                        DisplayDate = h.DisplayDate,
                        DateOfThisStatus = h.DateOfThisStatus,
                    }).ToList()
-                   
+
                });
 
         }
 
-       
-        public Task<List<PackageInformationResponse>> GetAllPackagesResponse() {
+
+        public Task<List<PackageInformationResponse>> GetAllPackagesResponse()
+        {
 
             return CreatePackageInformationResponseList().OrderBy(p => p.Id).ToListAsync();
 
@@ -67,37 +80,22 @@ namespace DbContextService
         public Task<PackageInformationResponse?> GetOnePackageResponse(long id)
         {
             return CreatePackageInformationResponseList().FirstOrDefaultAsync(p => p.Id == id); ;
-
         }
 
 
-        
-        public Task<List<PackageInformationResponse>> FilterPackages(string filter)
+
+        public Task<List<PackageInformationResponse>> FilterPackagesByStatus(string filter)
         {
-            if (filter == null)
-            {
-                throw new ArgumentNullException(nameof(filter));
-            }
+
+            ValidationMethods.ValidateStatusFilterValue(filter);
 
             return CreatePackageInformationResponseList().Where(p => p.CurrentStatus == filter).ToListAsync(); ;
 
         }
 
-        
+
         public void PostPackage(PackageInformationRequest packageItem)
         {
-            if(packageItem == null)
-            {
-                throw new ArgumentNullException("Error while creating a new package. PackageItem argument not provided.");
-            }
-
-            if (packageItem.Sender == null || packageItem.Recipient == null)
-            {
-                throw new ArgumentNullException("Error while creating a new package. Sender or Recipient object not found PackageInformationRequest type argument.");
-            }
-            if (packageItem.CurrentStatus == null) {
-                throw new ArgumentNullException("Error while creating a new package. Object argument 'CurrentStatus' not provided.");
-            }
 
             PackageInformation newItem = new PackageInformation()
             {
@@ -116,47 +114,42 @@ namespace DbContextService
                     Phone = packageItem.Recipient.Phone,
 
                 },
-                
+
             };
 
-            try
-            {
-                _context.PackageInformations.Add(newItem);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString(), "Error while addng PackageInformation istance.");
-            }
+            _context.PackageInformations.Add(newItem);
 
             if (newItem.TimeStampHistories.FirstOrDefault() == null)
             {
-                try {
-                    _context.StatusHistories.Add(new StatusHistory
-                    {
-                        PackageRef = newItem.Id,
-                        Status = PackageStatus.Created
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString(), "Error while addng StatusHistory instance.");
-                }
 
+                _context.StatusHistories.Add(new StatusHistory
+                {
+                    PackageRef = newItem.Id,
+                    Status = PackageStatus.Created
+                });
 
             }
 
-            _context.SaveChangesAsync();
+            TrySaveChanges("Error while adding a package to database.");
+
 
         }
 
         public void DeletePackage(long id)
         {
+
+
             PackageInformation? package = _context.PackageInformations.FirstOrDefault(x => x.Id == id);
-            if (package == null) {
-                throw new Exception($"Error while trying to delete a package. Package with id {id} not found.");
+
+            if (package == null)
+            {
+                throw new Exception($" Package with id {id} not found.");
             }
+
             _context.PackageInformations.Remove(package);
-            _context.SaveChangesAsync();
+
+            TrySaveChanges("Error while deleting a package.");
+
         }
 
         public ICollection<StatusHistoryResponse> GetTimestampHistories(long id)
@@ -164,12 +157,14 @@ namespace DbContextService
 
             PackageInformationResponse? package = GetOnePackageResponse(id).Result;
 
-            if (package == null) {
-                throw new Exception($"Package with id {id} not found");
+            if (package == null)
+            {
+                throw new Exception($"Package with id '{id}' not found");
             }
 
-            ICollection <StatusHistoryResponse> packageItemTimestampHistories = package.TimeStampHistories;
-          
+
+            ICollection<StatusHistoryResponse> packageItemTimestampHistories = package.TimeStampHistories;
+
             if (packageItemTimestampHistories == null)
             {
                 throw new Exception($"TimeStampHistories property not found in package with id {id}.");
@@ -178,24 +173,20 @@ namespace DbContextService
             return packageItemTimestampHistories;
         }
 
-        
+
         public StatusHistory UpdatePackageStatus(StatusHistoryRequest? newItem)
         {
-            
-            if (newItem == null || newItem.Status == null || newItem.PackageRef == null) {
-                throw new ArgumentNullException(nameof(newItem));
-            }
 
             StatusHistory newPackage = new StatusHistory()
             {
-                Status = PackageStatusMethods.StringToEnumConvert(newItem.Status),
+                Status = PackageStatusMethods.TryStringToEnumConvert(newItem.Status),
                 PackageRef = newItem.PackageRef,
 
             };
 
             _context.StatusHistories.Add(newPackage);
 
-            _context.SaveChangesAsync();
+            TrySaveChanges("Error while adding a package to database.");
 
             return newPackage;
         }

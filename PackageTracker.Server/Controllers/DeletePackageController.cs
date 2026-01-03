@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ModelsLibrary.Models;
 using DatabaseServiceContracts;
 using ModelsLibrary.DTOs;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using ModelsLibrary.Validation;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -23,6 +22,7 @@ namespace PackageTracker.Server.Controllers
         [Route("api/deletepackage/{id}")]
         public async Task<IActionResult> DeletePackage(long id)
         {
+            ValidationMethods.CheckIfNullOrNegative(id);
             PackageInformationResponse? packageItem = await _databaseService.GetOnePackageResponse(id);
             if (packageItem == null)
             {

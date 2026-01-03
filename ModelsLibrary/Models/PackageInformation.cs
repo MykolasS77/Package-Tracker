@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace ModelsLibrary.Models
@@ -7,9 +8,9 @@ namespace ModelsLibrary.Models
     {
         
         public int Id { get; set; }  
-        [Required]
+        [Required(ErrorMessage = "{0} object missing in PackageInformation.")] 
         public SenderInformation? Sender { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} object missing in PackageInformation.")]
         public RecipientInformation? Recipient { get; set; }
 
         [JsonIgnore]
@@ -17,6 +18,7 @@ namespace ModelsLibrary.Models
 
         public string DisplayDateFormatted => DisplayDate.ToString("yyyy-MM-dd HH:mm:ss");
 
+        [Required(ErrorMessage = "{0} ICollection value missing in PackageInformation")]
         public ICollection<StatusHistory> TimeStampHistories { get; set; } = new List<StatusHistory>();
 
     }

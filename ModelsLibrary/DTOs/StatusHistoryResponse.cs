@@ -9,11 +9,11 @@ namespace ModelsLibrary.DTOs
 {
     public class StatusHistoryResponse
     {
-        [Required]
+        [Required(ErrorMessage = "{0} string value missing in StatusHistoryResponse")]
         public string? Status {  get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} DateTime value missing in StatusHistoryResponse")]
         public DateTime DisplayDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} string value missing in StatusHistoryResponse")]
         public string? DateOfThisStatus { get; set; }
 
 

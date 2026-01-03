@@ -1,6 +1,7 @@
 ﻿using DatabaseServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
+using ModelsLibrary.Validation;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -18,10 +19,11 @@ namespace PackageTracker.Server.Controllers
         
         [HttpGet]
         [Route("api/filterpackages/{filter}")]
-        public async Task<ActionResult<PackageInformationResponse>> FilterPackages(string filter)
+        public async Task<ActionResult<PackageInformationResponse>> FilterPackagesByStatus(string filter)
         {
+            ValidationMethods.ValidateStatusFilterValue(filter);
 
-            List<PackageInformationResponse> packageItem = await _databaseService.FilterPackages(filter);
+            List<PackageInformationResponse> packageItem = await _databaseService.FilterPackagesByStatus(filter);
 
 
             if (packageItem == null)

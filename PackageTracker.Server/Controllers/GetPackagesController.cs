@@ -1,6 +1,7 @@
 ﻿using DatabaseServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
+using ModelsLibrary.Validation;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -28,10 +29,11 @@ namespace PackageTracker.Server.Controllers
         [Route("api/getsinglepackage/{id}")]
         public async Task<ActionResult<PackageInformationResponse>> DisplayPackage(long id)
         {
+            ValidationMethods.CheckIfNullOrNegative(id);
 
             PackageInformationResponse? packageItem = await _databaseService.GetOnePackageResponse(id);
 
-            if (packageItem == null || packageItem.TimeStampHistories == null)
+            if (packageItem == null)
             {
                 return NotFound();
             }

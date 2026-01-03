@@ -7,18 +7,20 @@ namespace ModelsLibrary.Models
     public class StatusHistory
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} enum of PackageStatus missing in StatusHistory")]
         public PackageStatus? Status { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} int value missing in StatusHistory")]
         public int? PackageRef { get; set; }
 
-        [JsonIgnore]
+        [Required(ErrorMessage = "{0} object missing in StatusHistory")]
         public PackageInformation? Package { get; set; }
 
         [JsonIgnore]
+        [Required(ErrorMessage = "{0} DateTime value missing in StatusHistory")]
         public DateTime DisplayDate { get; set; } = DateTime.Now;
 
+        [Required(ErrorMessage = "{0} string value missing in StatusHistory")]
         public string DateOfThisStatus => DisplayDate.ToString("yyyy-MM-dd HH:mm:ss");
 
       

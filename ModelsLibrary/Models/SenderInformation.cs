@@ -7,18 +7,19 @@ namespace ModelsLibrary.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} string missing in SenderInformation")]
         public string? FirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} string missing in SenderInformation")]
         public string? LastName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} string missing in SenderInformation")]
         public string? Address { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} string missing in SenderInformation")]
         public string? Phone { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} int value missing in SenderInformation")]
         public int PackageRef { get; set; }
 
         [JsonIgnore]
+        [Required(ErrorMessage = "{0} object missing in SenderInformation")]
         public PackageInformation? Package { get; set; }
     }
 }

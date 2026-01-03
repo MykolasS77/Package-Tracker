@@ -12,17 +12,19 @@ namespace ModelsLibrary.DTOs
     public class PackageInformationResponse
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} object missing in PackageInformationResponse")]
         public SenderDTO? Sender { get; set; }
-        [Required]
+        [Required(ErrorMessage = "{0} object missing in PackageInformationResponse")]
         public RecipientDTO? Recipient { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} string value missing in PackageInformationResponse")]
         public string? CurrentStatus { get; set; }
 
         [JsonIgnore]
+        [Required(ErrorMessage = "{0} DateTime value missing in PackageInformationResponse")]
         public DateTime DisplayDate { get; set; }
 
+        [Required(ErrorMessage = "{0} ICollection value missing in PackageInformationResponse")]
         public ICollection<StatusHistoryResponse> TimeStampHistories { get; set; } = new List<StatusHistoryResponse>();
     }
 }
