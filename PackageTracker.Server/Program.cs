@@ -1,52 +1,55 @@
 using DatabaseServiceContracts;
-using DbContextService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using PackageTracker.Server.Database;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<DatabaseContext>(opt =>
-    opt.UseInMemoryDatabase("PackageList"));
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
+bool? useSwagger = Convert.ToBoolean(Environment.GetEnvironmentVariable("USE_SWAGGER"));
+bool useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
+
+if (useSwagger == true)
+    builder.Services.AddSwaggerGen(c =>
     {
-        Title = "Package Tracking API",
-        Description = "Tracking packages",
-        Version = "v1"
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Package Tracking API",
+            Description = "Tracking packages",
+            Version = "v1"
+        });
+
     });
 
+
+builder.Services.AddControllers();
+builder.Services.AddDbContext<DatabaseContext>(opt =>
+{
+    if (useInMemoryDatabase)
+    {
+        opt.UseInMemoryDatabase("PackageList");
+
+    }
+    else
+    {
+        opt.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+    }
+
 });
+
+
 builder.Services.AddScoped<IDatabaseService, DatabaseLogic>();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment() && useSwagger == true)
+    app.UseSwagger();
+
+ 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
     db.Database.EnsureCreated();
 }
 
-    app.UseDefaultFiles();
-app.MapStaticAssets();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
-
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.MapControllers();
-
-app.MapFallbackToFile("/index.html");
-
 app.Run();

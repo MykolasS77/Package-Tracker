@@ -4,8 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace ModelsLibrary.Models
 {
+    
     public class StatusHistory
     {
+        
+        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "{0} enum of PackageStatus missing in StatusHistory")]
         public PackageStatus? Status { get; set; }

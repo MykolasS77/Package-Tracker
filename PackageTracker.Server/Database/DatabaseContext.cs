@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModelsLibrary.Models;
 
-namespace DbContextService; 
+namespace PackageTracker.Server.Database; 
 
 
 public class DatabaseContext : DbContext
 {
-    public DatabaseContext(DbContextOptions<DatabaseContext> options)
+
+    private readonly IConfiguration _configuration;
+    public DatabaseContext(DbContextOptions<DatabaseContext> options, IConfiguration configuration)
         : base(options)
     {
-        
+        this._configuration = configuration;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,7 +40,6 @@ public class DatabaseContext : DbContext
             PackageInformation package1 = new PackageInformation()
             {
                 Id = id,
-                //CurrentStatus = 0,
 
             };
 
@@ -71,17 +72,20 @@ public class DatabaseContext : DbContext
 
             modelBuilder.Entity<RecipientInformation>().HasData(recipient1);
 
+
             StatusHistory history1 = new StatusHistory()
             {
                 Id = id,
                 PackageRef = id,
                 Status = 0,
+                DisplayDate = Convert.ToBoolean(_configuration["UseInMemoryDatabase"]) ? DateTime.Now : DateTime.Parse("2026-01-01"), //For seeding without InMemoryDatabase setting, hardcoded value is needed for this property.
             };
 
             modelBuilder.Entity<StatusHistory>().HasData(history1);
         }
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++)
+        {
             AddSingleDummyEntity(i);
         }
 

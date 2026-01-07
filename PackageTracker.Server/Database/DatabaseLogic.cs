@@ -4,11 +4,12 @@ using ModelsLibrary.DTOs;
 using ModelsLibrary.Models;
 using ModelsLibrary.Validation;
 
-namespace DbContextService
+namespace PackageTracker.Server.Database
 {
     public class DatabaseLogic : IDatabaseService
     {
         private readonly DatabaseContext _context;
+
 
         public DatabaseLogic(DatabaseContext context)
         {
@@ -19,7 +20,7 @@ namespace DbContextService
         {
             try
             {
-                _context.SaveChangesAsync();
+                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -54,7 +55,7 @@ namespace DbContextService
                        Phone = p.Recipient.Phone,
 
                    },
-                   CurrentStatus = p.TimeStampHistories.Last().Status.ToString(),
+                   CurrentStatus = p.TimeStampHistories.OrderBy(p => p.Id).Last().Status.ToString(),
                    TimeStampHistories = p.TimeStampHistories.Select(h => new StatusHistoryResponse
                    {
                        Status = h.Status.ToString(),
@@ -79,7 +80,7 @@ namespace DbContextService
 
         public Task<PackageInformationResponse?> GetOnePackageResponse(long id)
         {
-            return CreatePackageInformationResponseList().FirstOrDefaultAsync(p => p.Id == id); ;
+            return CreatePackageInformationResponseList().FirstOrDefaultAsync(p => p.Id == id);
         }
 
 
@@ -119,6 +120,8 @@ namespace DbContextService
 
             _context.PackageInformations.Add(newItem);
 
+            TrySaveChanges("Error while adding PackageInformation table to database.");
+
             if (newItem.TimeStampHistories.FirstOrDefault() == null)
             {
 
@@ -130,7 +133,7 @@ namespace DbContextService
 
             }
 
-            TrySaveChanges("Error while adding a package to database.");
+            TrySaveChanges("Error while adding StatusHistory table to database.");
 
 
         }

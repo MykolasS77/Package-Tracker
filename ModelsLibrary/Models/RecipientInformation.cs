@@ -5,6 +5,7 @@ namespace ModelsLibrary.Models
 {
     public class RecipientInformation
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} string missing in RecipientInformation")]
