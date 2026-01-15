@@ -26,45 +26,26 @@ namespace PackageTracker.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RecipientInformation",
+                name: "SenderAndRecipientDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipientFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipientLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipientAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipientPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PackageRef = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RecipientInformation", x => x.Id);
+                    table.PrimaryKey("PK_SenderAndRecipientDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RecipientInformation_PackageInformations_PackageRef",
-                        column: x => x.PackageRef,
-                        principalTable: "PackageInformations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SenderInformation",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PackageRef = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SenderInformation", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SenderInformation_PackageInformations_PackageRef",
+                        name: "FK_SenderAndRecipientDetails_PackageInformations_PackageRef",
                         column: x => x.PackageRef,
                         principalTable: "PackageInformations",
                         principalColumn: "Id",
@@ -110,37 +91,20 @@ namespace PackageTracker.Server.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "RecipientInformation",
-                columns: new[] { "Id", "Address", "FirstName", "LastName", "PackageRef", "Phone" },
+                table: "SenderAndRecipientDetails",
+                columns: new[] { "Id", "PackageRef", "RecipientAddress", "RecipientFirstName", "RecipientLastName", "RecipientPhone", "SenderAddress", "SenderFirstName", "SenderLastName", "SenderPhone" },
                 values: new object[,]
                 {
-                    { 1, "Otherst010", "Some", "Guy", 1, "123456789" },
-                    { 2, "Otherst010", "Some", "Guy", 2, "123456789" },
-                    { 3, "Otherst010", "Some", "Guy", 3, "123456789" },
-                    { 4, "Otherst010", "Some", "Guy", 4, "123456789" },
-                    { 5, "Otherst010", "Some", "Guy", 5, "123456789" },
-                    { 6, "Otherst010", "Some", "Guy", 6, "123456789" },
-                    { 7, "Otherst010", "Some", "Guy", 7, "123456789" },
-                    { 8, "Otherst010", "Some", "Guy", 8, "123456789" },
-                    { 9, "Otherst010", "Some", "Guy", 9, "123456789" },
-                    { 10, "Otherst010", "Some", "Guy", 10, "123456789" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "SenderInformation",
-                columns: new[] { "Id", "Address", "FirstName", "LastName", "PackageRef", "Phone" },
-                values: new object[,]
-                {
-                    { 1, "Somest101", "John", "Doe", 1, "888888888" },
-                    { 2, "Somest101", "John", "Doe", 2, "888888888" },
-                    { 3, "Somest101", "John", "Doe", 3, "888888888" },
-                    { 4, "Somest101", "John", "Doe", 4, "888888888" },
-                    { 5, "Somest101", "John", "Doe", 5, "888888888" },
-                    { 6, "Somest101", "John", "Doe", 6, "888888888" },
-                    { 7, "Somest101", "John", "Doe", 7, "888888888" },
-                    { 8, "Somest101", "John", "Doe", 8, "888888888" },
-                    { 9, "Somest101", "John", "Doe", 9, "888888888" },
-                    { 10, "Somest101", "John", "Doe", 10, "888888888" }
+                    { 1, 1, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 2, 2, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 3, 3, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 4, 4, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 5, 5, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 6, 6, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 7, 7, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 8, 8, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 9, 9, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" },
+                    { 10, 10, "Otherst010", "Some", "Guy", "123456789", "Somest101", "John", "Doe", "888888888" }
                 });
 
             migrationBuilder.InsertData(
@@ -161,14 +125,8 @@ namespace PackageTracker.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipientInformation_PackageRef",
-                table: "RecipientInformation",
-                column: "PackageRef",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SenderInformation_PackageRef",
-                table: "SenderInformation",
+                name: "IX_SenderAndRecipientDetails_PackageRef",
+                table: "SenderAndRecipientDetails",
                 column: "PackageRef",
                 unique: true);
 
@@ -182,10 +140,7 @@ namespace PackageTracker.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RecipientInformation");
-
-            migrationBuilder.DropTable(
-                name: "SenderInformation");
+                name: "SenderAndRecipientDetails");
 
             migrationBuilder.DropTable(
                 name: "StatusHistories");

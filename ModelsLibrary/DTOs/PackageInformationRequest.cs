@@ -10,7 +10,7 @@ namespace ModelsLibrary.DTOs
 {
     public class PackageInformationRequest
     {
-        [Key]
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} object missing in PackageInformationRequest")]

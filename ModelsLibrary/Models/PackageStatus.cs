@@ -8,9 +8,5 @@ namespace ModelsLibrary.Models
             Accepted,
             Returned,
             Canceled,
-        }
-
-        
-
-    
+        }   
 }

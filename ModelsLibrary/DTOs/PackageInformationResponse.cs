@@ -11,7 +11,6 @@ namespace ModelsLibrary.DTOs
 {
     public class PackageInformationResponse
     {
-        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "{0} object missing in PackageInformationResponse")]
         public SenderDTO? Sender { get; set; }

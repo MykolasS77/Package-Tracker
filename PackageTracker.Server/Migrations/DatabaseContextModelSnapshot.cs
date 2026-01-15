@@ -77,7 +77,7 @@ namespace PackageTracker.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ModelsLibrary.Models.RecipientInformation", b =>
+            modelBuilder.Entity("ModelsLibrary.Models.SenderAndRecipientDetails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,22 +85,38 @@ namespace PackageTracker.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PackageRef")
                         .HasColumnType("int");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("RecipientAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderPhone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -109,225 +125,138 @@ namespace PackageTracker.Server.Migrations
                     b.HasIndex("PackageRef")
                         .IsUnique();
 
-                    b.ToTable("RecipientInformation");
+                    b.ToTable("SenderAndRecipientDetails");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 1,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 2,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 2,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 3,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 3,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 4,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 4,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 5,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 5,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 6,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 6,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 7,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 7,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 8,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 8,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 9,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 9,
-                            Phone = "123456789"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         },
                         new
                         {
                             Id = 10,
-                            Address = "Otherst010",
-                            FirstName = "Some",
-                            LastName = "Guy",
                             PackageRef = 10,
-                            Phone = "123456789"
-                        });
-                });
-
-            modelBuilder.Entity("ModelsLibrary.Models.SenderInformation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PackageRef")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PackageRef")
-                        .IsUnique();
-
-                    b.ToTable("SenderInformation");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 1,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 2,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 3,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 4,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 5,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 6,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 7,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 8,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 9,
-                            Phone = "888888888"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Address = "Somest101",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            PackageRef = 10,
-                            Phone = "888888888"
+                            RecipientAddress = "Otherst010",
+                            RecipientFirstName = "Some",
+                            RecipientLastName = "Guy",
+                            RecipientPhone = "123456789",
+                            SenderAddress = "Somest101",
+                            SenderFirstName = "John",
+                            SenderLastName = "Doe",
+                            SenderPhone = "888888888"
                         });
                 });
 
@@ -427,22 +356,11 @@ namespace PackageTracker.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ModelsLibrary.Models.RecipientInformation", b =>
+            modelBuilder.Entity("ModelsLibrary.Models.SenderAndRecipientDetails", b =>
                 {
                     b.HasOne("ModelsLibrary.Models.PackageInformation", "Package")
-                        .WithOne("Recipient")
-                        .HasForeignKey("ModelsLibrary.Models.RecipientInformation", "PackageRef")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Package");
-                });
-
-            modelBuilder.Entity("ModelsLibrary.Models.SenderInformation", b =>
-                {
-                    b.HasOne("ModelsLibrary.Models.PackageInformation", "Package")
-                        .WithOne("Sender")
-                        .HasForeignKey("ModelsLibrary.Models.SenderInformation", "PackageRef")
+                        .WithOne("SenderAndRecipientDetails")
+                        .HasForeignKey("ModelsLibrary.Models.SenderAndRecipientDetails", "PackageRef")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -462,10 +380,7 @@ namespace PackageTracker.Server.Migrations
 
             modelBuilder.Entity("ModelsLibrary.Models.PackageInformation", b =>
                 {
-                    b.Navigation("Recipient")
-                        .IsRequired();
-
-                    b.Navigation("Sender")
+                    b.Navigation("SenderAndRecipientDetails")
                         .IsRequired();
 
                     b.Navigation("TimeStampHistories");

@@ -7,11 +7,18 @@ namespace PackageTracker.Server.Database;
 public class DatabaseContext : DbContext
 {
 
-    private readonly IConfiguration _configuration;
+    private readonly IConfiguration? _configuration;
+    
+    //Constructor without IConfiguration type argument used for database mocking in unit tests.
+    public DatabaseContext(DbContextOptions<DatabaseContext> options)
+        : base(options)
+    {
+        
+    }
     public DatabaseContext(DbContextOptions<DatabaseContext> options, IConfiguration configuration)
         : base(options)
     {
-        this._configuration = configuration;
+        _configuration = configuration;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,14 +27,9 @@ public class DatabaseContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<PackageInformation>()
-            .HasOne(p => p.Sender)
+            .HasOne(p => p.SenderAndRecipientDetails)
             .WithOne(s => s.Package)
-                .HasForeignKey<SenderInformation>(s => s.PackageRef);
-
-        modelBuilder.Entity<PackageInformation>()
-            .HasOne(p => p.Recipient)
-            .WithOne(s => s.Package)
-                .HasForeignKey<RecipientInformation>(s => s.PackageRef);
+            .HasForeignKey<SenderAndRecipientDetails>(s => s.PackageRef);
 
         modelBuilder.Entity<PackageInformation>()
             .HasMany(p => p.TimeStampHistories)
@@ -35,50 +37,39 @@ public class DatabaseContext : DbContext
             .HasForeignKey(s => s.PackageRef);
 
         //Seeding database with dummy content.
-        void AddSingleDummyEntity(int id)
+        void AddDummyEntities(int id)
         {
-            PackageInformation package1 = new PackageInformation()
+
+            PackageInformation package = new PackageInformation()
             {
                 Id = id,
-
             };
 
-            modelBuilder.Entity<PackageInformation>();
+            modelBuilder.Entity<PackageInformation>().HasData(package);
 
-            modelBuilder.Entity<PackageInformation>().HasData(package1);
-
-            SenderInformation sender1 = new SenderInformation()
+            SenderAndRecipientDetails packageDetails = new SenderAndRecipientDetails()
             {
                 Id = id,
-                FirstName = "John",
-                LastName = "Doe",
-                Address = "Somest101",
-                Phone = "888888888",
-                PackageRef = id,
+                SenderFirstName = "John",
+                SenderLastName = "Doe",
+                SenderAddress = "Somest101",
+                SenderPhone = "888888888",
+                RecipientFirstName = "Some",
+                RecipientLastName = "Guy",
+                RecipientAddress = "Otherst010",
+                RecipientPhone = "123456789",
+                PackageRef = package.Id,
             };
 
-            modelBuilder.Entity<SenderInformation>().HasData(sender1);
-
-            RecipientInformation recipient1 = new RecipientInformation()
-            {
-                Id = id,
-                FirstName = "Some",
-                LastName = "Guy",
-                Address = "Otherst010",
-                Phone = "123456789",
-                PackageRef = id
-
-            };
-
-            modelBuilder.Entity<RecipientInformation>().HasData(recipient1);
+            modelBuilder.Entity<SenderAndRecipientDetails>().HasData(packageDetails);
 
 
             StatusHistory history1 = new StatusHistory()
             {
                 Id = id,
-                PackageRef = id,
+                PackageRef = package.Id,
                 Status = 0,
-                DisplayDate = Convert.ToBoolean(_configuration["UseInMemoryDatabase"]) ? DateTime.Now : DateTime.Parse("2026-01-01"), //For seeding without InMemoryDatabase setting, hardcoded value is needed for this property.
+                DisplayDate = Convert.ToBoolean(_configuration?["UseInMemoryDatabase"]) ? DateTime.Now : DateTime.Parse("2026-01-01"), //For seeding without InMemoryDatabase setting, hardcoded value is needed for this property.
             };
 
             modelBuilder.Entity<StatusHistory>().HasData(history1);
@@ -86,13 +77,13 @@ public class DatabaseContext : DbContext
 
         for (int i = 1; i <= 10; i++)
         {
-            AddSingleDummyEntity(i);
+            AddDummyEntities(i);
         }
 
     }
 
-    public DbSet<PackageInformation> PackageInformations { get; set; }
-    public DbSet<StatusHistory> StatusHistories { get; set; }
+    public virtual DbSet<PackageInformation> PackageInformations { get; set; }
+    public virtual DbSet<StatusHistory> StatusHistories { get; set; }
 
 
 }

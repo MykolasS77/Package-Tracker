@@ -34,6 +34,8 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
         opt.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
     }
 
+
+
 });
 
 

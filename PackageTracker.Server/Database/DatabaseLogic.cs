@@ -9,8 +9,6 @@ namespace PackageTracker.Server.Database
     public class DatabaseLogic : IDatabaseService
     {
         private readonly DatabaseContext _context;
-
-
         public DatabaseLogic(DatabaseContext context)
         {
             _context = context;
@@ -20,11 +18,12 @@ namespace PackageTracker.Server.Database
         {
             try
             {
-                 _context.SaveChanges();
+                  _context.SaveChanges();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString(), errorMessage);
+                throw;
             }
         }
 
@@ -34,28 +33,31 @@ namespace PackageTracker.Server.Database
         private IQueryable<PackageInformationResponse> CreatePackageInformationResponseList()
         {
 
-            return _context.PackageInformations
+            IQueryable<PackageInformationResponse> packagesResponse = _context.PackageInformations
                .Select(p =>
                new PackageInformationResponse()
                {
                    Id = p.Id,
-                   Sender = p.Sender == null ? null : new SenderDTO()
+                   Sender = p.SenderAndRecipientDetails == null ? null : new SenderDTO()
                    {
-                       FirstName = p.Sender.FirstName,
-                       LastName = p.Sender.LastName,
-                       Address = p.Sender.Address,
-                       Phone = p.Sender.Phone,
+                       FirstName = p.SenderAndRecipientDetails.SenderFirstName,
+                       LastName = p.SenderAndRecipientDetails.SenderLastName,
+                       Address = p.SenderAndRecipientDetails.SenderAddress,
+                       Phone = p.SenderAndRecipientDetails.SenderPhone,
 
                    },
-                   Recipient = p.Recipient == null ? null : new RecipientDTO()
+                   Recipient = p.SenderAndRecipientDetails == null ? null : new RecipientDTO()
                    {
-                       FirstName = p.Recipient.FirstName,
-                       LastName = p.Recipient.LastName,
-                       Address = p.Recipient.Address,
-                       Phone = p.Recipient.Phone,
+                       FirstName = p.SenderAndRecipientDetails.RecipientFirstName,
+                       LastName = p.SenderAndRecipientDetails.RecipientLastName,
+                       Address = p.SenderAndRecipientDetails.RecipientAddress,
+                       Phone = p.SenderAndRecipientDetails.RecipientPhone,
 
                    },
-                   CurrentStatus = p.TimeStampHistories.OrderBy(p => p.Id).Last().Status.ToString(),
+                   CurrentStatus = p.TimeStampHistories
+                       .OrderByDescending(h => h.Id)
+                       .Select(h => h.Status.ToString())
+                       .FirstOrDefault() ?? "Created",
                    TimeStampHistories = p.TimeStampHistories.Select(h => new StatusHistoryResponse
                    {
                        Status = h.Status.ToString(),
@@ -65,14 +67,14 @@ namespace PackageTracker.Server.Database
 
                });
 
+            return packagesResponse;
+
         }
 
 
-        public Task<List<PackageInformationResponse>> GetAllPackagesResponse()
+        public async Task<List<PackageInformationResponse>> GetAllPackagesResponse()
         {
-
-            return CreatePackageInformationResponseList().OrderBy(p => p.Id).ToListAsync();
-
+            return await CreatePackageInformationResponseList().OrderBy(p => p.Id).ToListAsync();
             //OrderBy extension is needed to prevent incorrect order of packages on display when you delete and add a new one.
 
         }
@@ -100,38 +102,33 @@ namespace PackageTracker.Server.Database
 
             PackageInformation newItem = new PackageInformation()
             {
-                Sender = new SenderInformation()
+                SenderAndRecipientDetails = new SenderAndRecipientDetails()
                 {
-                    FirstName = packageItem.Sender.FirstName,
-                    LastName = packageItem.Sender.LastName,
-                    Address = packageItem.Sender.Address,
-                    Phone = packageItem.Sender.Phone,
-                },
-                Recipient = new RecipientInformation()
-                {
-                    FirstName = packageItem.Recipient.FirstName,
-                    LastName = packageItem.Recipient.LastName,
-                    Address = packageItem.Recipient.Address,
-                    Phone = packageItem.Recipient.Phone,
+                    SenderFirstName = packageItem?.Sender?.FirstName,
+                    SenderLastName = packageItem?.Sender?.LastName,
+                    SenderAddress = packageItem?.Sender?.Address,
+                    SenderPhone = packageItem?.Sender?.Phone,
+                    RecipientFirstName = packageItem?.Recipient?.FirstName,
+                    RecipientLastName = packageItem?.Recipient?.LastName,
+                    RecipientAddress = packageItem?.Recipient?.Address,
+                    RecipientPhone = packageItem?.Recipient?.Phone,
 
-                },
+                }
 
             };
+
+
 
             _context.PackageInformations.Add(newItem);
 
             TrySaveChanges("Error while adding PackageInformation table to database.");
 
-            if (newItem.TimeStampHistories.FirstOrDefault() == null)
+
+            _context.StatusHistories.Add(new StatusHistory
             {
-
-                _context.StatusHistories.Add(new StatusHistory
-                {
-                    PackageRef = newItem.Id,
-                    Status = PackageStatus.Created
-                });
-
-            }
+                PackageRef = newItem.Id,
+                Status = PackageStatus.Created
+            });
 
             TrySaveChanges("Error while adding StatusHistory table to database.");
 
@@ -179,6 +176,7 @@ namespace PackageTracker.Server.Database
 
         public StatusHistory UpdatePackageStatus(StatusHistoryRequest? newItem)
         {
+
 
             StatusHistory newPackage = new StatusHistory()
             {
