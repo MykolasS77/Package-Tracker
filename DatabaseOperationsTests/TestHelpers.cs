@@ -1,13 +1,4 @@
-﻿using Azure;
-using Azure.Core;
-using DatabaseServiceContracts;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
-using ModelsLibrary.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using ModelsLibrary.DTOs;
 using Xunit;
 
 namespace DatabaseOperationsTests

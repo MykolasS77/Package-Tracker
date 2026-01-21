@@ -1,10 +1,7 @@
-﻿using Azure;
-using DatabaseServiceContracts;
+﻿using DatabaseServiceContracts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using ModelsLibrary.DTOs;
 using PackageTracker.Server.Database;
-using System.Threading.Channels;
 using Xunit;
 
 namespace DatabaseOperationsTests
