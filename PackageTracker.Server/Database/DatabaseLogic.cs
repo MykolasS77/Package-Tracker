@@ -174,14 +174,14 @@ namespace PackageTracker.Server.Database
         }
 
 
-        public StatusHistory UpdatePackageStatus(StatusHistoryRequest? newItem)
+        public StatusHistory UpdatePackageStatus(StatusHistoryRequest? request)
         {
 
 
             StatusHistory newPackage = new StatusHistory()
             {
-                Status = PackageStatusMethods.TryStringToEnumConvert(newItem.Status),
-                PackageRef = newItem.PackageRef,
+                Status = PackageStatusMethods.TryStringToEnumConvert(request.Status),
+                PackageRef = request.PackageRef,
 
             };
 

@@ -1,81 +1,78 @@
-﻿using DatabaseServiceContracts;
-using ModelsLibrary.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using ModelsLibrary.DTOs;
 using Xunit;
 
 namespace DatabaseOperationsTests
 {
     public class TestHelpers
-    {  
-        public async static Task<bool> TestAgainstMockedValues(int insertValues, IDatabaseService _databaseService)
+    {
+
+        public static void CompareResponseAgainstMock(List<PackageInformationResponse> packageResponses, List<PackageRequestMock> requestMocks)
         {
-
-            List<PackageInformationRequest> requestMocks = MockGenerator.GenerateMockRequestList(insertValues);
-            List<bool> testCases = new List<bool>();
-
-            AddMockedPackages(requestMocks, _databaseService);
-
-            List<PackageInformationResponse> packagesResponse = await _databaseService.GetAllPackagesResponse();
-
-            testCases.Add(CompareResponseAgainstMock(packagesResponse, requestMocks));
-            testCases.Add(CheckIfKeyValuesAscending(packagesResponse));
-
-            foreach (bool testCase in testCases) {
-                if (!testCase) {
-                    return false;
-                }  
-            }
-
-            return true;
-        }
-
-        public static void AddMockedPackages(List<PackageInformationRequest> requestMocks, IDatabaseService _databaseService)
-        {
-            for (int i = 0; i < requestMocks.Count; i++)
-            {
-                _databaseService.PostPackage(requestMocks[i]);
-            }
-
-        }
-
-        public static bool CompareResponseAgainstMock(List<PackageInformationResponse> packageResponses, List<PackageInformationRequest> requestMocks)
-        {
+            Assert.Equal(packageResponses.Count, requestMocks.Count);
 
             for (int i = 0; i < packageResponses.Count; i++)
             {
-                if (packageResponses[i] is not PackageInformationResponse ||
-                   packageResponses.Count != requestMocks.Count ||
-                   packageResponses[i].Recipient?.FirstName != requestMocks[i].Recipient?.FirstName ||
-                   packageResponses[i].Recipient?.LastName != requestMocks[i].Recipient?.LastName ||
-                   packageResponses[i].Recipient?.Address != requestMocks[i].Recipient?.Address ||
-                   packageResponses[i].Recipient?.Phone != requestMocks[i].Recipient?.Phone ||
-                   packageResponses[i].Sender?.FirstName != requestMocks[i].Sender?.FirstName ||
-                   packageResponses[i].Sender?.LastName != requestMocks[i].Sender?.LastName ||
-                   packageResponses[i].Sender?.Address != requestMocks[i].Sender?.Address ||
-                   packageResponses[i].Sender?.Phone != requestMocks[i].Sender?.Phone
-                    )
-                    return false;                   
+                PackageInformationResponse response = packageResponses[i];
+                PackageInformationRequest requestMock = requestMocks[i].GenerateMockObject();
+
+                Assert.Equal(requestMock.Recipient?.FirstName, response.Recipient?.FirstName);
+                Assert.Equal(requestMock.Recipient?.LastName, response.Recipient?.LastName);
+                Assert.Equal(requestMock.Recipient?.Address, response.Recipient?.Address);
+                Assert.Equal(requestMock.Recipient?.Phone, response.Recipient?.Phone);
+                Assert.Equal(requestMock.Sender?.FirstName, response.Sender?.FirstName);
+                Assert.Equal(requestMock.Sender?.LastName, response.Sender?.LastName);
+                Assert.Equal(requestMock.Sender?.Address, response.Sender?.Address);
+                Assert.Equal(requestMock.Sender?.Phone, response.Sender?.Phone);
             }
 
-            return true;
+
 
         }
-        
 
-        public static bool CheckIfKeyValuesAscending(List<PackageInformationResponse> packageResponses)
+        public static void CheckIfKeyValuesAscending(List<PackageInformationResponse> packageResponses)
         {
-            for (int i = 0;  i < packageResponses.Count - 1; i++)
+            for (int i = 0; i < packageResponses.Count - 1; i++)
             {
-                if (packageResponses[i].Id + 1 != packageResponses[i + 1].Id)
-                {
-                    return false;
-                }
+                Assert.Equal(packageResponses[i].Id + 1, packageResponses[i + 1].Id);
+
             }
-            return true; 
+
         }
+
+
+        public static void CheckIfInitialStatusesSetToCreated(List<PackageInformationResponse> responses)
+        {
+
+            foreach (PackageInformationResponse response in responses)
+            {
+                Assert.Single(response.TimeStampHistories);
+                Assert.Equal("Created", response.CurrentStatus);
+             
+            }
+
+        }
+
+        public static void CheckIfStatusUpdated(List<PackageInformationResponse> responsesAfterUpdate, List<List<StatusHistoryRequest>> statusHistoryRequestList)
+        {
+
+            foreach (PackageInformationResponse response in responsesAfterUpdate)
+            {
+                List<StatusHistoryResponse> statusChangesHistory = response.TimeStampHistories.ToList();
+                statusChangesHistory.RemoveAt(0);
+                List<List<StatusHistoryRequest>> requestsMocksThatMatchWithResponseById = statusHistoryRequestList.Where(p => p[0].PackageRef == response.Id).ToList();
+
+                for (int i = 0; i < statusChangesHistory.Count; i++)
+                {
+                    
+                    Assert.Equal(statusChangesHistory[i].Status, requestsMocksThatMatchWithResponseById[0][i].Status);
+
+                }
+
+            }
+
+        }
+
+
 
 
     }
