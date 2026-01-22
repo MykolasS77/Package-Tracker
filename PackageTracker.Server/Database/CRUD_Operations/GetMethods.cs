@@ -1,31 +1,13 @@
-﻿using DatabaseServiceContracts;
+﻿using DbServiceContracts;
 using Microsoft.EntityFrameworkCore;
 using ModelsLibrary.DTOs;
-using ModelsLibrary.Models;
 using ModelsLibrary.Validation;
 
-namespace PackageTracker.Server.Database
+namespace PackageTracker.Server.Database.CRUD_Operations
 {
-    public class DatabaseLogic : IDatabaseService
+    public class GetMethods : DatabaseLogic, IGetMethods
     {
-        private readonly DatabaseContext _context;
-        public DatabaseLogic(DatabaseContext context)
-        {
-            _context = context;
-        }
-
-        private void TrySaveChanges(string errorMessage = "Error while trying to save changes after database operation.")
-        {
-            try
-            {
-                  _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString(), errorMessage);
-                throw;
-            }
-        }
+        public GetMethods(DatabaseContext context) : base(context) { }
 
         /// <summary>
         /// Gets a list of package data in DTO format, which can later be used for display of all packages, getting single package data, filtering out packages etc.
@@ -71,7 +53,6 @@ namespace PackageTracker.Server.Database
 
         }
 
-
         public async Task<List<PackageInformationResponse>> GetAllPackagesResponse()
         {
             return await CreatePackageInformationResponseList().OrderBy(p => p.Id).ToListAsync();
@@ -97,61 +78,6 @@ namespace PackageTracker.Server.Database
         }
 
 
-        public void PostPackage(PackageInformationRequest packageItem)
-        {
-
-            PackageInformation newItem = new PackageInformation()
-            {
-                SenderAndRecipientDetails = new SenderAndRecipientDetails()
-                {
-                    SenderFirstName = packageItem?.Sender?.FirstName,
-                    SenderLastName = packageItem?.Sender?.LastName,
-                    SenderAddress = packageItem?.Sender?.Address,
-                    SenderPhone = packageItem?.Sender?.Phone,
-                    RecipientFirstName = packageItem?.Recipient?.FirstName,
-                    RecipientLastName = packageItem?.Recipient?.LastName,
-                    RecipientAddress = packageItem?.Recipient?.Address,
-                    RecipientPhone = packageItem?.Recipient?.Phone,
-
-                }
-
-            };
-
-
-
-            _context.PackageInformations.Add(newItem);
-
-            TrySaveChanges("Error while adding PackageInformation table to database.");
-
-
-            _context.StatusHistories.Add(new StatusHistory
-            {
-                PackageRef = newItem.Id,
-                Status = PackageStatus.Created
-            });
-
-            TrySaveChanges("Error while adding StatusHistory table to database.");
-
-
-        }
-
-        public void DeletePackage(long id)
-        {
-
-
-            PackageInformation? package = _context.PackageInformations.FirstOrDefault(x => x.Id == id);
-
-            if (package == null)
-            {
-                throw new Exception($" Package with id {id} not found.");
-            }
-
-            _context.PackageInformations.Remove(package);
-
-            TrySaveChanges("Error while deleting a package.");
-
-        }
-
         public ICollection<StatusHistoryResponse> GetTimestampHistories(long id)
         {
 
@@ -172,25 +98,5 @@ namespace PackageTracker.Server.Database
 
             return packageItemTimestampHistories;
         }
-
-
-        public StatusHistory UpdatePackageStatus(StatusHistoryRequest? request)
-        {
-
-
-            StatusHistory newPackage = new StatusHistory()
-            {
-                Status = PackageStatusMethods.TryStringToEnumConvert(request.Status),
-                PackageRef = request.PackageRef,
-
-            };
-
-            _context.StatusHistories.Add(newPackage);
-
-            TrySaveChanges("Error while adding a package to database.");
-
-            return newPackage;
-        }
-
     }
 }

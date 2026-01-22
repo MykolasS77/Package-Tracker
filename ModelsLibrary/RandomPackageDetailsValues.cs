@@ -1,10 +1,12 @@
 ﻿
 
-namespace DatabaseOperationsTests
+namespace ModelsLibrary
 {
     public class RandomPackageDetailsValues
     {
-        public readonly List<string> FirstNames = new()
+        private Random random = new Random();
+
+        private readonly List<string> FirstNames = new()
         {
             "Jack","Peter","Michael","James","John","Robert","David","William","Thomas","Daniel",
             "Matthew","Andrew","Joseph","Christopher","Anthony","Mark","Paul","Steven","Kevin","Brian",
@@ -18,7 +20,7 @@ namespace DatabaseOperationsTests
             "Simon","Adrian","Marcus","Felix","Oscar","Theo","Leon","Maxwell","Harrison","Sebastian"
         };
 
-        public readonly List<string> LastNames = new()
+        private readonly List<string> LastNames = new()
         {
             "Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Rodriguez","Martinez",
             "Hernandez","Lopez","Gonzalez","Wilson","Anderson","Thomas","Taylor","Moore","Jackson","Martin",
@@ -32,7 +34,7 @@ namespace DatabaseOperationsTests
             "Price","Alvarez","Castillo","Sanders"
         };
 
-        public readonly List<string> Addresses = new()
+        private readonly List<string> Addresses = new()
         {
             "123 Main St","45 Oak Avenue","9 Pine Rd","742 Evergreen Terrace","1600 Pennsylvania Ave NW",
             "221B Baker St","10 Downing St","88 Sunset Blvd Apt5","12 River Dr Unit3","500 Market St Suite200",
@@ -58,7 +60,7 @@ namespace DatabaseOperationsTests
             "22 Maplewood Rd","11 Oakwood Ave","77 Pinewood St","66 Cedarwood Ln","99 Birchwood Rd","101 Elmwood Ln"
         };
 
-        public readonly List<string> PhoneNumbers = new()
+        private readonly List<string> PhoneNumbers = new()
         {
             "5550100001","5550100002","5550100003","5550100004","5550100005","5550100006","5550100007","5550100008","5550100009","5550100010",
             "12025550101","12025550102","12025550103","12025550104","12025550105","12025550106","12025550107","12025550108","12025550109","12025550110",
@@ -71,5 +73,27 @@ namespace DatabaseOperationsTests
             "+911234567890","+911234567891","+911234567892","+911234567893","+911234567894","+911234567895","+911234567896","+911234567897","+911234567898","+911234567899",
             "+61212345678","+61212345679","+61212345680","+61212345681","+61212345682","+61212345683","+61212345684","+61212345685","+61212345686","+61212345687"
         };
+
+        public string GetRandomFirstName()
+        {
+            return FirstNames[random.Next(FirstNames.Count)];
+        }
+
+        public string GetRandomLastName()
+        {
+            return LastNames[random.Next(LastNames.Count)];
+        }
+
+        public string GetRandomAddress()
+        {
+            return Addresses[random.Next(LastNames.Count)];
+        }
+
+        public string GetRandomPhoneNumber()
+        {
+            return PhoneNumbers[random.Next(LastNames.Count)];
+        }
+
+
     }
 }

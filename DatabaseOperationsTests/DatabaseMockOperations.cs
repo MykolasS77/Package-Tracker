@@ -1,33 +1,45 @@
-﻿using DatabaseServiceContracts;
+﻿using DbServiceContracts;
 using ModelsLibrary.DTOs;
 
 namespace DatabaseOperationsTests
 {
     public class DatabaseMockOperations
     {
-        private readonly IDatabaseService _databaseService;
-        public DatabaseMockOperations(IDatabaseService databaseService)
+        private readonly IGetMethods _getMethods;
+        private readonly IPostMethods _postMethods;
+        private readonly IDeleteMethods _deleteMethods;
+        private readonly IUpdateMethods _updateMethods;
+        public DatabaseMockOperations(IGetMethods getMethods, IPostMethods postMethods, IDeleteMethods deleteMethods, IUpdateMethods updateMethods)
         {
-            _databaseService = databaseService;
+            _getMethods = getMethods;
+            _postMethods = postMethods;
+            _deleteMethods = deleteMethods;
+            _updateMethods = updateMethods;
+        }
+        public async Task<List<PackageInformationResponse>> GetAllPackagesResponse()
+        {
+            return await _getMethods.GetAllPackagesResponse();
+        }
+
+        public async Task<PackageInformationResponse> GetOnePackage(long id)
+        {
+            PackageInformationResponse? package = await _getMethods.GetOnePackageResponse(id);
+
+            return package;
         }
         public void AddMockedPackages(List<PackageRequestMock> requestMocks)
         {
             for (int i = 0; i < requestMocks.Count; i++)
             {
-                _databaseService.PostPackage(requestMocks[i].GenerateMockObject());
+                _postMethods.PostPackage(requestMocks[i].GenerateMockObject());
             }
 
         }
-        public async Task<List<PackageInformationResponse>> GetAllPackagesResponse()
-        {
-            return await _databaseService.GetAllPackagesResponse();
-        }
 
-        public async Task<PackageInformationResponse> GetOnePackage(long id)
+        public void AddSingleMockedPackage(PackageRequestMock requestMock)
         {
-            PackageInformationResponse? package = await _databaseService.GetOnePackageResponse(id);
+            _postMethods.PostPackage(requestMock.GenerateMockObject());
 
-            return package;
         }
 
         public void InsertRandomlyGeneratedMocks(int insertValues)
@@ -36,7 +48,7 @@ namespace DatabaseOperationsTests
 
             foreach (PackageRequestMock request in mockList)
             {
-                _databaseService.PostPackage(request.GenerateMockObject());
+                _postMethods.PostPackage(request.GenerateMockObject());
             }
 
         }
@@ -45,7 +57,7 @@ namespace DatabaseOperationsTests
         {
             foreach (StatusHistoryRequest request in statusHistoryRequestList)
             {
-                _databaseService.UpdatePackageStatus(request);
+                _updateMethods.UpdatePackageStatus(request);
             }
         }
 

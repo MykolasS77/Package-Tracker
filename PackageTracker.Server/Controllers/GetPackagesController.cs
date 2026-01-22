@@ -1,4 +1,4 @@
-﻿using DatabaseServiceContracts;
+﻿using DbServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
 using ModelsLibrary.Validation;
@@ -10,18 +10,18 @@ namespace PackageTracker.Server.Controllers
     /// </summary>
     public class GetPackagesController : Controller
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly IGetMethods _getService;
 
-        public GetPackagesController(IDatabaseService databaseService)
+        public GetPackagesController(IGetMethods databaseService)
         {
-            _databaseService = databaseService;
+            _getService = databaseService;
         }
 
         [HttpGet]
         [Route("api/getallpackages")]
         public async Task<ActionResult<IEnumerable<PackageInformationResponse>>> DisplayAllPackages()
         {
-            List<PackageInformationResponse> packages = await _databaseService.GetAllPackagesResponse();
+            List<PackageInformationResponse> packages = await _getService.GetAllPackagesResponse();
             return Ok(packages);
         }
 
@@ -31,7 +31,7 @@ namespace PackageTracker.Server.Controllers
         {
             ValidationMethods.CheckIfNullOrNegative(id);
 
-            PackageInformationResponse? packageItem = await _databaseService.GetOnePackageResponse(id);
+            PackageInformationResponse? packageItem = await _getService.GetOnePackageResponse(id);
 
             if (packageItem == null)
             {

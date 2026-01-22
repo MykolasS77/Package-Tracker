@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ModelsLibrary.Models;
-using DatabaseServiceContracts;
+﻿using DbServiceContracts;
+using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
+using ModelsLibrary.Models;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -11,11 +11,11 @@ namespace PackageTracker.Server.Controllers
     [ApiController]
     public class CreatePackageController : ControllerBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly IPostMethods _postMethods;
 
-        public CreatePackageController(IDatabaseService databaseService)
+        public CreatePackageController(IPostMethods databaseService)
         {
-            _databaseService = databaseService;
+            _postMethods = databaseService;
         }
 
         [HttpPost]
@@ -28,7 +28,7 @@ namespace PackageTracker.Server.Controllers
 
             }
 
-            _databaseService.PostPackage(newItem);
+            _postMethods.PostPackage(newItem);
 
             return CreatedAtAction(nameof(CreateNewPackage), new { id = newItem.Id }, newItem);
 

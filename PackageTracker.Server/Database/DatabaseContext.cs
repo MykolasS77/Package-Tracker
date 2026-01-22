@@ -1,29 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ModelsLibrary;
 using ModelsLibrary.Models;
 
-namespace PackageTracker.Server.Database; 
+
+namespace PackageTracker.Server.Database;
 
 
 public class DatabaseContext : DbContext
 {
 
     private readonly IConfiguration? _configuration;
-    
+    private readonly RandomPackageDetailsValues _randomValues;
+
     //Constructor without IConfiguration type argument used for database mocking in unit tests.
     public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
-        
+        _randomValues = new RandomPackageDetailsValues();
     }
     public DatabaseContext(DbContextOptions<DatabaseContext> options, IConfiguration configuration)
         : base(options)
     {
         _configuration = configuration;
+        _randomValues = new RandomPackageDetailsValues();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       
+
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<PackageInformation>()
@@ -47,17 +51,19 @@ public class DatabaseContext : DbContext
 
             modelBuilder.Entity<PackageInformation>().HasData(package);
 
+
+
             SenderAndRecipientDetails packageDetails = new SenderAndRecipientDetails()
             {
                 Id = id,
-                SenderFirstName = "John",
-                SenderLastName = "Doe",
-                SenderAddress = "Somest101",
-                SenderPhone = "888888888",
-                RecipientFirstName = "Some",
-                RecipientLastName = "Guy",
-                RecipientAddress = "Otherst010",
-                RecipientPhone = "123456789",
+                SenderFirstName = _randomValues.GetRandomFirstName(),
+                SenderLastName = _randomValues.GetRandomLastName(),
+                SenderAddress = _randomValues.GetRandomAddress(),
+                SenderPhone = _randomValues.GetRandomPhoneNumber(),
+                RecipientFirstName = _randomValues.GetRandomFirstName(),
+                RecipientLastName = _randomValues.GetRandomLastName(),
+                RecipientAddress = _randomValues.GetRandomAddress(),
+                RecipientPhone = _randomValues.GetRandomPhoneNumber(),
                 PackageRef = package.Id,
             };
 

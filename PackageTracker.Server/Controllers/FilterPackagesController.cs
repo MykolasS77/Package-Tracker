@@ -1,4 +1,4 @@
-﻿using DatabaseServiceContracts;
+﻿using DbServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
 using ModelsLibrary.Validation;
@@ -10,20 +10,20 @@ namespace PackageTracker.Server.Controllers
     /// </summary>
     public class FilterPackagesController : Controller
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly IGetMethods _getService;
 
-        public FilterPackagesController(IDatabaseService databaseService)
+        public FilterPackagesController(IGetMethods databaseService)
         {
-            _databaseService = databaseService;
+            _getService = databaseService;
         }
-        
+
         [HttpGet]
         [Route("api/filterpackages/{filter}")]
         public async Task<ActionResult<PackageInformationResponse>> FilterPackagesByStatus(string filter)
         {
             ValidationMethods.ValidateStatusFilterValue(filter);
 
-            List<PackageInformationResponse> packageItem = await _databaseService.FilterPackagesByStatus(filter);
+            List<PackageInformationResponse> packageItem = await _getService.FilterPackagesByStatus(filter);
 
 
             if (packageItem == null)

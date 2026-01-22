@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ModelsLibrary.Models;
-using DatabaseServiceContracts;
+﻿using DbServiceContracts;
+using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
+using ModelsLibrary.Models;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -11,11 +11,13 @@ namespace PackageTracker.Server.Controllers
     [ApiController]
     public class StatusHistoryController : ControllerBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly IUpdateMethods _updateService;
+        private readonly IGetMethods _getService;
 
-        public StatusHistoryController( IDatabaseService databaseService)
+        public StatusHistoryController(IUpdateMethods updateService, IGetMethods getService)
         {
-            _databaseService = databaseService;
+            _updateService = updateService;
+            _getService = getService;
         }
 
         [HttpGet]
@@ -23,7 +25,7 @@ namespace PackageTracker.Server.Controllers
         public async Task<ActionResult<PackageInformation>> GetStatusHistory(long id)
         {
 
-            ICollection<StatusHistoryResponse>? packageItem = _databaseService.GetTimestampHistories(id);
+            ICollection<StatusHistoryResponse>? packageItem = _getService.GetTimestampHistories(id);
 
 
             if (packageItem == null)
@@ -39,17 +41,19 @@ namespace PackageTracker.Server.Controllers
         public async Task<ActionResult<StatusHistory>> UpdatePacakgeStatus(StatusHistoryRequest? newItem)
         {
 
-            if (!ModelState.IsValid || newItem == null) {
+            if (!ModelState.IsValid || newItem == null)
+            {
 
                 throw new InvalidOperationException("Error with StatusHistoryRequest");
             }
 
-            StatusHistory? updatedItem = _databaseService.UpdatePackageStatus(newItem);
+            StatusHistory? updatedItem = _updateService.UpdatePackageStatus(newItem);
 
-            if (updatedItem == null) { 
+            if (updatedItem == null)
+            {
                 throw new ArgumentNullException(nameof(newItem));
             }
-         
+
             return updatedItem;
         }
 

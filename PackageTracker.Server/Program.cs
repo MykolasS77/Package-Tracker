@@ -1,7 +1,8 @@
-using DatabaseServiceContracts;
+using DbServiceContracts;
 using Microsoft.EntityFrameworkCore;
-using PackageTracker.Server.Database;
 using Microsoft.OpenApi;
+using PackageTracker.Server.Database;
+using PackageTracker.Server.Database.CRUD_Operations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,14 +40,17 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 });
 
 
-builder.Services.AddScoped<IDatabaseService, DatabaseLogic>();
+builder.Services.AddScoped<IGetMethods, GetMethods>();
+builder.Services.AddScoped<IPostMethods, PostNewPackageMethods>();
+builder.Services.AddScoped<IUpdateMethods, UpdatePackageStatusMethods>();
+builder.Services.AddScoped<IDeleteMethods, DeletePackageMethods>();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment() && useSwagger == true)
     app.UseSwagger();
 
- 
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();

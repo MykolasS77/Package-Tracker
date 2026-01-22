@@ -1,7 +1,4 @@
-﻿using ModelsLibrary.DTOs;
-using System;
-using System.Collections.Generic;
-
+﻿using ModelsLibrary;
 
 namespace DatabaseOperationsTests
 {
@@ -20,24 +17,19 @@ namespace DatabaseOperationsTests
         //Insert randomly generated values if no arguments provided
         public MockGeneratorBase()
         {
-            Random randomNumber = new Random();
-            RandomPackageDetailsValues randomDetails = new RandomPackageDetailsValues();
-            List<string> firstNames = randomDetails.FirstNames;
-            List<string> lastNames = randomDetails.LastNames;
-            List<string> adresses = randomDetails.Addresses;
-            List<string> phoneNumbers = randomDetails.PhoneNumbers;
+            RandomPackageDetailsValues randomValues = new RandomPackageDetailsValues();
 
-            _recipientFirstName = firstNames[randomNumber.Next(0, firstNames.Count)];
-            _recipientLastName = lastNames[randomNumber.Next(0, lastNames.Count)];
-            _senderFirstName = firstNames[randomNumber.Next(0, firstNames.Count)];
-            _senderLastName = lastNames[randomNumber.Next(0, lastNames.Count)];
-            _recipientPhone = phoneNumbers[randomNumber.Next(0, phoneNumbers.Count)];
-            _senderPhone = phoneNumbers[randomNumber.Next(0, phoneNumbers.Count)];
-            _recipientAdress = adresses[randomNumber.Next(0, adresses.Count)];
-            _senderAdress = adresses[randomNumber.Next(0, adresses.Count)];
+            _recipientFirstName = randomValues.GetRandomFirstName();
+            _recipientLastName = randomValues.GetRandomLastName();
+            _senderFirstName = randomValues.GetRandomFirstName();
+            _senderLastName = randomValues.GetRandomLastName();
+            _recipientPhone = randomValues.GetRandomPhoneNumber();
+            _senderPhone = randomValues.GetRandomPhoneNumber();
+            _recipientAdress = randomValues.GetRandomAddress();
+            _senderAdress = randomValues.GetRandomAddress();
 
         }
-     
+
 
     }
 }

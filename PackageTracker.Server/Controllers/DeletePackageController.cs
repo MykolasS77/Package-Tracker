@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DatabaseServiceContracts;
+﻿using DbServiceContracts;
+using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
 using ModelsLibrary.Validation;
 
@@ -11,11 +11,13 @@ namespace PackageTracker.Server.Controllers
     [ApiController]
     public class DeletePackageController : ControllerBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly IDeleteMethods _deleteService;
+        private readonly IGetMethods _getMethods;
 
-        public DeletePackageController(IDatabaseService databaseService)
+        public DeletePackageController(IDeleteMethods deleteService, IGetMethods getMethods)
         {
-            _databaseService = databaseService;
+            _deleteService = deleteService;
+            _getMethods = getMethods;
         }
 
         [HttpDelete]
@@ -23,13 +25,13 @@ namespace PackageTracker.Server.Controllers
         public async Task<IActionResult> DeletePackage(long id)
         {
             ValidationMethods.CheckIfNullOrNegative(id);
-            PackageInformationResponse? packageItem = await _databaseService.GetOnePackageResponse(id);
+            PackageInformationResponse? packageItem = await _getMethods.GetOnePackageResponse(id);
             if (packageItem == null)
             {
                 return NotFound();
             }
 
-            _databaseService.DeletePackage(id);
+            _deleteService.DeletePackage(id);
 
             return Ok();
         }
