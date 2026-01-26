@@ -6,13 +6,20 @@ namespace PackageTracker.Server.Database.CRUD_Operations
 {
     public class UpdatePackageStatusMethods : DatabaseLogic, IUpdateMethods
     {
-        public UpdatePackageStatusMethods(DatabaseContext context) : base(context) { }
-        public StatusHistory UpdatePackageStatus(StatusHistoryRequest? request)
+        private readonly IValidationMethods _validationMethods;
+        public UpdatePackageStatusMethods(DatabaseContext context, IValidationMethods validationMethods) : base(context) { 
+        
+            _validationMethods = validationMethods; 
+
+        }
+        public StatusHistory AddTimestamp(StatusHistoryRequest request)
         {
+
+            PackageStatus newStatus = TryStringToEnumConvert(request.Status, (int)request.PackageRef);
 
             StatusHistory newPackage = new StatusHistory()
             {
-                Status = PackageStatusMethods.TryStringToEnumConvert(request.Status),
+                Status = newStatus,
                 PackageRef = request.PackageRef,
 
             };
@@ -22,6 +29,18 @@ namespace PackageTracker.Server.Database.CRUD_Operations
             TrySaveChanges("Error while adding a package to database.");
 
             return newPackage;
+
+
+
+        }
+
+        private PackageStatus TryStringToEnumConvert(string value, int packageId)
+        {
+            _validationMethods.ValidateStatusFilterValue(value);
+            _validationMethods.CheckUpdateAvailability(value, packageId);
+
+            return (PackageStatus)Enum.Parse(typeof(PackageStatus), value);
+
         }
     }
 }

@@ -11,6 +11,6 @@ namespace DbServiceContracts
         /// <param name="newItem"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public StatusHistory UpdatePackageStatus(StatusHistoryRequest newItem);
+        public StatusHistory AddTimestamp(StatusHistoryRequest newItem);
     }
 }

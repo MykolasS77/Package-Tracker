@@ -13,7 +13,7 @@ namespace DbServiceContracts
         /// Gets one package.
         /// </summary>
         /// <returns>A task with PackageInformationResponse object</returns>
-        public Task<PackageInformationResponse?> GetOnePackageResponse(long id);
+        public Task<PackageInformationResponse?> GetOnePackageResponse(int id);
         /// <summary>
         /// Gets a filtered packages list based on specified status.
         /// </summary>
@@ -24,6 +24,6 @@ namespace DbServiceContracts
         /// Gets timestamp history data which is used for displaying package status history table.
         /// </summary>
         /// <returns>A collection of StatusHistoryResponse objects</returns>
-        public ICollection<StatusHistoryResponse> GetTimestampHistories(long id);
+        public List<StatusHistoryResponse> GetStatusHistories(int id);
     }
 }

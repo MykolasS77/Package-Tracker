@@ -6,9 +6,8 @@ namespace PackageTracker.Server.Database.CRUD_Operations
 {
     public class DeletePackageMethods : DatabaseLogic, IDeleteMethods
     {
-        public DeletePackageMethods(DatabaseContext context) : base(context)
-        {
-        }
+        public DeletePackageMethods(DatabaseContext context) : base(context) { }
+        
         public void DeletePackage(long id)
         {
 

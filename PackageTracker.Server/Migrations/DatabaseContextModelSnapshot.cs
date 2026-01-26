@@ -32,7 +32,7 @@ namespace PackageTracker.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PackageInformations");
+                    b.ToTable("PackageInformations", (string)null);
 
                     b.HasData(
                         new
@@ -125,7 +125,7 @@ namespace PackageTracker.Server.Migrations
                     b.HasIndex("PackageRef")
                         .IsUnique();
 
-                    b.ToTable("SenderAndRecipientDetails");
+                    b.ToTable("SenderAndRecipientDetails", (string)null);
 
                     b.HasData(
                         new
@@ -281,7 +281,7 @@ namespace PackageTracker.Server.Migrations
 
                     b.HasIndex("PackageRef");
 
-                    b.ToTable("StatusHistories");
+                    b.ToTable("StatusHistories", (string)null);
 
                     b.HasData(
                         new

@@ -49,7 +49,6 @@ function StatusDropdownButton({ currentStatus, packageRef, variant = "transparen
         }
         if (currentStatus == "Returned") {
             return (<>
-                {dropdownItem("Sent")}
                 {dropdownItem("Canceled")}
             </>)
         }

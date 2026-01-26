@@ -40,7 +40,8 @@ public class DatabaseContext : DbContext
             .WithOne(s => s.Package)
             .HasForeignKey(s => s.PackageRef);
 
-        //Seeding database with dummy content.
+
+
         void AddDummyEntities(int id)
         {
 

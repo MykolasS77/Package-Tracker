@@ -1,7 +1,9 @@
-﻿using ModelsLibrary.DTOs;
+﻿using DatabaseOperationsTests.MockHelpers;
+using ModelsLibrary.DTOs;
+using ModelsLibrary.Models;
 using Xunit;
 
-namespace DatabaseOperationsTests
+namespace DatabaseOperationsTests.HelpersForTesting
 {
     public class TestHelpers
     {
@@ -46,7 +48,7 @@ namespace DatabaseOperationsTests
             foreach (PackageInformationResponse response in responses)
             {
                 Assert.Single(response.TimeStampHistories);
-                Assert.Equal("Created", response.CurrentStatus);
+                Assert.Equal(nameof(PackageStatus.Created), response.CurrentStatus);
              
             }
 
@@ -54,6 +56,11 @@ namespace DatabaseOperationsTests
 
         public static void CheckIfStatusUpdated(List<PackageInformationResponse> responsesAfterUpdate, List<List<StatusHistoryRequest>> statusHistoryRequestList)
         {
+
+            if(responsesAfterUpdate == null || statusHistoryRequestList == null || responsesAfterUpdate.Count == 0 || statusHistoryRequestList.Count == 0)
+            {
+                throw new ArgumentNullException("One of the arguments has either a null value or is empty.");
+            }
 
             foreach (PackageInformationResponse response in responsesAfterUpdate)
             {

@@ -1,7 +1,6 @@
 ﻿using DbServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
-using ModelsLibrary.Validation;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -13,18 +12,20 @@ namespace PackageTracker.Server.Controllers
     {
         private readonly IDeleteMethods _deleteService;
         private readonly IGetMethods _getMethods;
+        private readonly IValidationMethods _validationMethods;
 
-        public DeletePackageController(IDeleteMethods deleteService, IGetMethods getMethods)
+        public DeletePackageController(IDeleteMethods deleteService, IGetMethods getMethods, IValidationMethods validationMethods)
         {
             _deleteService = deleteService;
             _getMethods = getMethods;
+            _validationMethods = validationMethods;
         }
 
         [HttpDelete]
         [Route("api/deletepackage/{id}")]
-        public async Task<IActionResult> DeletePackage(long id)
+        public async Task<IActionResult> DeletePackage(int id)
         {
-            ValidationMethods.CheckIfNullOrNegative(id);
+            _validationMethods.CheckIfNull(id);
             PackageInformationResponse? packageItem = await _getMethods.GetOnePackageResponse(id);
             if (packageItem == null)
             {

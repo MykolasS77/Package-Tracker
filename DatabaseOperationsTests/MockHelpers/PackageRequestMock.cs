@@ -1,6 +1,7 @@
 ﻿using ModelsLibrary.DTOs;
+using ModelsLibrary.Models;
 
-namespace DatabaseOperationsTests
+namespace DatabaseOperationsTests.MockHelpers
 {
     public class PackageRequestMock : MockGeneratorBase
     {
@@ -49,7 +50,7 @@ namespace DatabaseOperationsTests
                     Address = _senderAdress,
                     Phone = _senderPhone
                 },
-                CurrentStatus = "Created"
+                CurrentStatus = nameof(PackageStatus.Created),
             };
 
             return mockRequest;

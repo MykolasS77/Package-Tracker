@@ -22,10 +22,10 @@ namespace PackageTracker.Server.Controllers
 
         [HttpGet]
         [Route("api/statushistory/{id}")]
-        public async Task<ActionResult<PackageInformation>> GetStatusHistory(long id)
+        public async Task<ActionResult<PackageInformation>> GetStatusHistory(int id)
         {
 
-            ICollection<StatusHistoryResponse>? packageItem = _getService.GetTimestampHistories(id);
+            ICollection<StatusHistoryResponse>? packageItem = _getService.GetStatusHistories(id);
 
 
             if (packageItem == null)
@@ -38,8 +38,9 @@ namespace PackageTracker.Server.Controllers
 
         [HttpPost]
         [Route("/api/statushistory")]
-        public async Task<ActionResult<StatusHistory>> UpdatePacakgeStatus(StatusHistoryRequest? newItem)
+        public async Task<ActionResult<StatusHistory>> AddUpdatedPackageStatus(StatusHistoryRequest? newItem)
         {
+            //Status get's updated by adding a new element to the list of StatusHistory. 
 
             if (!ModelState.IsValid || newItem == null)
             {
@@ -47,7 +48,7 @@ namespace PackageTracker.Server.Controllers
                 throw new InvalidOperationException("Error with StatusHistoryRequest");
             }
 
-            StatusHistory? updatedItem = _updateService.UpdatePackageStatus(newItem);
+            StatusHistory? updatedItem = _updateService.AddTimestamp(newItem);
 
             if (updatedItem == null)
             {

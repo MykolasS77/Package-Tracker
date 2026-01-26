@@ -1,13 +1,16 @@
 ﻿using DbServiceContracts;
 using Microsoft.EntityFrameworkCore;
 using ModelsLibrary.DTOs;
-using ModelsLibrary.Validation;
+using PackageTracker.Server.Database.Validation;
 
 namespace PackageTracker.Server.Database.CRUD_Operations
 {
     public class GetMethods : DatabaseLogic, IGetMethods
     {
+
         public GetMethods(DatabaseContext context) : base(context) { }
+        
+            
 
         /// <summary>
         /// Gets a list of package data in DTO format, which can later be used for display of all packages, getting single package data, filtering out packages etc.
@@ -61,7 +64,7 @@ namespace PackageTracker.Server.Database.CRUD_Operations
         }
 
 
-        public Task<PackageInformationResponse?> GetOnePackageResponse(long id)
+        public Task<PackageInformationResponse?> GetOnePackageResponse(int id)
         {
             return CreatePackageInformationResponseList().FirstOrDefaultAsync(p => p.Id == id);
         }
@@ -71,14 +74,12 @@ namespace PackageTracker.Server.Database.CRUD_Operations
         public Task<List<PackageInformationResponse>> FilterPackagesByStatus(string filter)
         {
 
-            ValidationMethods.ValidateStatusFilterValue(filter);
-
             return CreatePackageInformationResponseList().Where(p => p.CurrentStatus == filter).ToListAsync(); ;
 
         }
 
 
-        public ICollection<StatusHistoryResponse> GetTimestampHistories(long id)
+        public List<StatusHistoryResponse> GetStatusHistories(int id)
         {
 
             PackageInformationResponse? package = GetOnePackageResponse(id).Result;
@@ -89,7 +90,7 @@ namespace PackageTracker.Server.Database.CRUD_Operations
             }
 
 
-            ICollection<StatusHistoryResponse> packageItemTimestampHistories = package.TimeStampHistories;
+            List<StatusHistoryResponse> packageItemTimestampHistories = package.TimeStampHistories.ToList();
 
             if (packageItemTimestampHistories == null)
             {

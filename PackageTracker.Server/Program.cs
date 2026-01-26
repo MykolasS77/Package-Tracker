@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using PackageTracker.Server.Database;
 using PackageTracker.Server.Database.CRUD_Operations;
+using PackageTracker.Server.Database.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,8 @@ builder.Services.AddScoped<IGetMethods, GetMethods>();
 builder.Services.AddScoped<IPostMethods, PostNewPackageMethods>();
 builder.Services.AddScoped<IUpdateMethods, UpdatePackageStatusMethods>();
 builder.Services.AddScoped<IDeleteMethods, DeletePackageMethods>();
+builder.Services.AddScoped<IValidationMethods, ValidationMethods>();
+
 
 var app = builder.Build();
 

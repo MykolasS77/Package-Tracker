@@ -1,7 +1,7 @@
 ﻿using ModelsLibrary.DTOs;
 using System.Text.RegularExpressions;
 
-namespace DatabaseOperationsTests
+namespace DatabaseOperationsTests.MockHelpers
 {
     public static class StatusHistoryRequestMockGenerator
     {    

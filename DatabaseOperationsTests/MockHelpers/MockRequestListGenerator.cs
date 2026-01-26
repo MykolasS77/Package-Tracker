@@ -1,6 +1,4 @@
-﻿
-
-namespace DatabaseOperationsTests
+﻿namespace DatabaseOperationsTests.MockHelpers
 {
     public class MockRequestListGenerator
     {

@@ -1,7 +1,7 @@
 ﻿using DbServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using ModelsLibrary.DTOs;
-using ModelsLibrary.Validation;
+using PackageTracker.Server.Database.Validation;
 
 namespace PackageTracker.Server.Controllers
 {
@@ -11,10 +11,12 @@ namespace PackageTracker.Server.Controllers
     public class GetPackagesController : Controller
     {
         private readonly IGetMethods _getService;
+        private readonly IValidationMethods _validationMethods;
 
-        public GetPackagesController(IGetMethods databaseService)
+        public GetPackagesController(IGetMethods getService, IValidationMethods validationMethods)
         {
-            _getService = databaseService;
+            _getService = getService;
+            _validationMethods = validationMethods;
         }
 
         [HttpGet]
@@ -27,9 +29,9 @@ namespace PackageTracker.Server.Controllers
 
         [HttpGet]
         [Route("api/getsinglepackage/{id}")]
-        public async Task<ActionResult<PackageInformationResponse>> DisplayPackage(long id)
+        public async Task<ActionResult<PackageInformationResponse>> DisplayPackage(int id)
         {
-            ValidationMethods.CheckIfNullOrNegative(id);
+            _validationMethods.CheckIfNull(id);
 
             PackageInformationResponse? packageItem = await _getService.GetOnePackageResponse(id);
 

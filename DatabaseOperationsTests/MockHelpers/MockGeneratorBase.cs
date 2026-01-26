@@ -1,6 +1,6 @@
 ﻿using ModelsLibrary;
 
-namespace DatabaseOperationsTests
+namespace DatabaseOperationsTests.MockHelpers
 {
     public abstract class MockGeneratorBase
     {
